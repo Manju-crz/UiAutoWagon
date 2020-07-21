@@ -1,0 +1,33 @@
+
+
+
+
+Adding New Component to handle
+==============================
+
+1. Create a new class (classname- XyzPatterns) inside the package- mks.uiautowagon.interactor.patterns
+2. XyzPatterns class- Define all researched patterns in it.
+3. Create class Xyz inside the package- mks.uiautowagon.interactor.patterns.objects.
+4. XyzPatterns class - Write required methods in it which help to identify the Xyz type.
+5. Include Getters and Setters that covers all the identification from XyzPatterns.
+5. XyzPatterns - Make sure findPattern method has been included in the class.
+6. Xyz class - Make sure Xyz class has been included with compare method.
+7. Xyz class - Make sure Xyz class has been included with toString method.
+8. Create a XyzStore class inside mks.uiautowagon.interactor.store
+9. XyzStore class should have add and find methods
+10. Create XyzComponent class inside mks.uiautowagon.interactor.components package
+11. XyzComponent class - Make sure all get methods are implemented.
+12. DomReader class > distribute method - Write new component related code in it (increment variable / Xyz variable / if condition in inside loop).
+13. WagonerFacade class - Add a variable inside the clas with Xyz type and initialize XyzComponent in reload method
+
+
+
+
+Pattern Adding
+===============
+
+1. Add a enum label into the required XyzPattern class.
+2. Add relevant pattern hunter method, include if dependent on any already existing pattern.
+3. Include the pattern into findPattern method
+4. Xyz class - Include the new pattern relevant element's labels into compare method
+
