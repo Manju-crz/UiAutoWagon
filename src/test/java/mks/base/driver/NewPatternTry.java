@@ -13,7 +13,7 @@ import mks.uiautowagon.interactor.WagonerFacade;
 
 public class NewPatternTry extends DriverBase{
 
-	//@Test
+	@Test
 	public void testMarketo() {
 		
 		String url = "https://app-sjqe.marketo.com/";
@@ -29,7 +29,7 @@ public class NewPatternTry extends DriverBase{
 		wagoner.checkBox.get("Remember Email").click();
 		Sleep.for2Seconds();
 		wagoner.button.get("LOGIN").click();
-		Sleep.for10Seconds();
+		Sleep.for2Seconds();
 		
 	}
 	

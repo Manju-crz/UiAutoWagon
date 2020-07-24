@@ -8,8 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import mks.base.driver.Connector;
-import mks.base.mainComponents.TempCheckbox;
-import mks.base.mainComponents.TempTextField;
 import mks.driver.base.DriverBase;
 import mks.driver.webutils.BrowserUtil;
 import mks.java.util.Sleep;
@@ -25,7 +23,6 @@ public class TestWithFacade extends DriverBase {
 		driver.get(url);
 		Connector connector = new Connector(driver);
 		
-		new TempTextField(connector).setText("Search for anything", "qweqweqwe");
 		Sleep.for2Seconds();
 	}
 

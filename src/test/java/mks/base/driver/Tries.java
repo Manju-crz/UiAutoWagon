@@ -7,8 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
-import mks.base.mainComponents.TempCheckbox;
-import mks.base.mainComponents.TempTextField;
 import mks.driver.base.DriverBase;
 import mks.java.util.Sleep;
 
