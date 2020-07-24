@@ -14,6 +14,7 @@ public class RadioButton {
 	
 	private String parentDivText = null;
 	
+	private String divParentingToInputWithParentSiblingText = null;
 
 	public WebElement getElement() {
 		return element;
@@ -46,7 +47,15 @@ public class RadioButton {
 	public void setParentDivText(String parentDivText) {
 		this.parentDivText = parentDivText;
 	}
-	
+
+	public String getDivParentingToInputWithParentSiblingText() {
+		return divParentingToInputWithParentSiblingText;
+	}
+
+	public void setDivParentingToInputWithParentSiblingText(String divParentingToInputWithParentSiblingText) {
+		this.divParentingToInputWithParentSiblingText = divParentingToInputWithParentSiblingText;
+	}
+
 	public WebElement compare(String elementText) {
 
 		if ((siblingLabel != null) && siblingLabel.equalsIgnoreCase(elementText))
@@ -54,6 +63,8 @@ public class RadioButton {
 		else if ((parentLabelText != null) && parentLabelText.equalsIgnoreCase(elementText))
 			return element;
 		else if ((parentDivText != null) && parentDivText.equalsIgnoreCase(elementText))
+			return element;
+		else if ((divParentingToInputWithParentSiblingText != null) && divParentingToInputWithParentSiblingText.equalsIgnoreCase(elementText))
 			return element;
 		return null;
 	}
@@ -68,6 +79,9 @@ public class RadioButton {
 		}
 		if (parentDivText != null) {
 			str.append("Radiobutton Parent Div Text : " + parentDivText);
+		}
+		if (divParentingToInputWithParentSiblingText != null) {
+			str.append("Radiobutton DivParenting To Input WithParent SiblingText : " + divParentingToInputWithParentSiblingText);
 		}
 		if (element != null) {
 			str.append("Element tag : " + element.getTagName());

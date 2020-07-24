@@ -109,7 +109,7 @@ public class NewPatternTry extends DriverBase{
 	}
 	
 
-	@Test
+	//@Test
 	public void testSCYesNoRadio() {
 
 		String url = "https://apply.standardchartered.co.in/personal-loan?pid=IN_IP_PL_CR&_ga=2.124102095.492274700.1594548540-1994161994.1594548540";
@@ -123,5 +123,33 @@ public class NewPatternTry extends DriverBase{
 		wagoner.getCount();
 	}
 	
+
+	//@Test
+	public void testAdidasShopRadio() {
+
+		String url = "https://shop.adidas.co.in/adidas/account/register.do";
+		driver.get(url);
+		WagonerFacade wagoner = new WagonerFacade(driver);
+		wagoner.getCount();
+		wagoner.radioButton.get("MALE").click();
+		Sleep.for2Seconds();
+		wagoner.radioButton.get("FEMALE").click();
+		Sleep.for2Seconds();
+		wagoner.getCount();
+	}
+	
+	
+
+	//@Test
+	public void testAdidasShopRadioDriverCode() {
+
+		String url = "https://shop.adidas.co.in/adidas/account/register.do";
+		driver.get(url);
+		Sleep.for5Seconds();
+		clickOnLocation(driver.findElement(By.id("userName")));
+		Sleep.for2Seconds();
+		jsSetText(driver.findElement(By.id("userName")), "sdfdsfs");
+		Sleep.for2Seconds();
+	}
 	
 }

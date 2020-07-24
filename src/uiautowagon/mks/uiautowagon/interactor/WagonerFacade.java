@@ -8,9 +8,11 @@ import mks.uiautowagon.interactor.components.ClickElementComponent;
 import mks.uiautowagon.interactor.components.LinkComponent;
 import mks.uiautowagon.interactor.components.RadioButtonComponent;
 import mks.uiautowagon.interactor.components.TextFieldComponent;
+import mks.uiautowagon.interactor.patterns.objects.RadioButton;
 import mks.uiautowagon.interactor.store.ButtonStore;
 import mks.uiautowagon.interactor.store.ClickElementStore;
 import mks.uiautowagon.interactor.store.LinkStore;
+import mks.uiautowagon.interactor.store.RadioButtonStore;
 
 public class WagonerFacade {
 
@@ -57,6 +59,12 @@ public class WagonerFacade {
 		
 		ClickElementStore clkStore = new ClickElementStore();
 		System.out.println("clkStore.clickELementsList.size() is : " + clkStore.clickELementsList.size());
+
+		RadioButtonStore radioButtons = new RadioButtonStore();
+		System.out.println("radioButtons.rdoList.size() is : " + radioButtons.rdoList.size());
+		for(RadioButton radioButton: radioButtons.rdoList) {
+			System.out.println("radioButtons.rdoList : " + radioButton.toString());
+		}
 		
 	}
 
