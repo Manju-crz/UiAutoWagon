@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
-import mks.base.driver.Connector;
 import mks.driver.base.DriverBase;
 import mks.driver.webutils.BrowserUtil;
 import mks.java.util.Sleep;
@@ -21,8 +20,6 @@ public class TestWithFacade extends DriverBase {
 		
 		String url = "https://www.ebay.com/";
 		driver.get(url);
-		Connector connector = new Connector(driver);
-		
 		Sleep.for2Seconds();
 	}
 
