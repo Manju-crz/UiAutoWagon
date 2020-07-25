@@ -52,7 +52,6 @@ public class DomReader {
 		int checkboxCount = 1;
 		int buttonCount = 1;
 		int lnkCount = 1;
-		int clickCount = 1;
 		int rdoCount = 1;
 		int otherCount = 1;
 
@@ -111,7 +110,6 @@ public class DomReader {
 					clk.setElementText(clickTxts);
 					clk.setElement(element);
 					ces.add(clk);
-					clickCount++;
 					continue;
 				}
 
@@ -127,8 +125,6 @@ public class DomReader {
 					clk.setElementText(clickTxts);
 					clk.setElement(element);
 					ces.add(clk);
-					clickCount++;
-					
 					continue;
 				}
 

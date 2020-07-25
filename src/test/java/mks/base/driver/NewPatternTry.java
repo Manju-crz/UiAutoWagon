@@ -13,7 +13,7 @@ import mks.uiautowagon.interactor.WagonerFacade;
 
 public class NewPatternTry extends DriverBase{
 
-	@Test
+	//@Test
 	public void testMarketo() {
 		
 		String url = "https://app-sjqe.marketo.com/";
@@ -150,6 +150,26 @@ public class NewPatternTry extends DriverBase{
 		Sleep.for2Seconds();
 		jsSetText(driver.findElement(By.id("userName")), "sdfdsfs");
 		Sleep.for2Seconds();
+	}
+	
+	
+
+	@Test
+	public void clickTest() {
+		
+		String url = "https://app-sjqe.marketo.com/";
+		driver.get(url);
+		
+		WagonerFacade wagoner = new WagonerFacade(driver);
+		wagoner.getCount();
+		Sleep.for2Seconds();
+		//clickOnLocation(wagoner.clickElement.get("LOGIN"));
+		
+		wagoner.clickElement.get("LOGIN").click();
+		Sleep.for2Seconds();
+		wagoner.clickElement.get("Forgot Password?").click();
+		Sleep.for5Seconds();
+		
 	}
 	
 }
