@@ -1,10 +1,14 @@
 package mks.uiautowagon.interactor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -36,7 +40,10 @@ import mks.uiautowagon.interactor.store.TextFieldsStore;
 public class DomReader {
 
 	private WebDriver driver = null;
-
+	
+	private List<String> tags = new ArrayList<String>(Arrays.asList("input","a","button"));
+	
+	
 	DomReader(WebDriver driver) {
 		this.driver = driver;
 	}
@@ -44,7 +51,7 @@ public class DomReader {
 	
 	void distribute() {
 
-		List<WebElement> allElements = driver.findElements(By.xpath("//body//*"));
+		List<WebElement> allElements = driver.findElements(By.xpath("//body//*")); //[not(contains(@style,'display:none'))]
 		System.out.println("inputElements size is : " + allElements.size());
 		ElementsStorage elementsStore = new ElementsStorage();
 
@@ -67,9 +74,21 @@ public class DomReader {
 		int runningCount = 1;
 		for (WebElement element : allElements) {
 			System.out.println("runningCount s: " + (runningCount++));
-			String allAttributes = new SupportUtil(driver).getAttributes(element);
-			System.out.println(">>>>>>>>>>>>>>>> Started identifying for : " + element.getTagName());
+			String allAttributes = null;
+			try {
+				allAttributes = new SupportUtil(driver).getAttributes(element);
+				element.isDisplayed();
+			} catch (StaleElementReferenceException | NoSuchElementException e) {
+				continue;
+			}
+
+			String currentTagName = element.getTagName();
+			System.out.println(">>>>>>>>>>>>>>>> Started identifying for : " + currentTagName);
+			if (!tags.contains(currentTagName)) {
+				continue;
+			}
 			System.out.println("allAttributes are : " + allAttributes);
+
 			if ((allAttributes != null) && allAttributes.contains("=")) {
 
 				Frames frame = new FramePatterns(element).findPattern();
@@ -100,7 +119,7 @@ public class DomReader {
 					elementsStore.add("Button" + buttonCount, buttonElement);
 					bs.add(buttonElement);
 					buttonCount++;
-					
+
 					Set<String> clickTxts = new HashSet<>();
 					clickTxts.add(buttonElement.getButtonText());
 					clickTxts.addAll(buttonElement.getButtonInnerSpanTexts());
@@ -118,7 +137,7 @@ public class DomReader {
 					elementsStore.add("Link" + lnkCount, lnkElement);
 					lk.add(lnkElement);
 					lnkCount++;
-					
+
 					Set<String> clickTxts = new HashSet<>();
 					clickTxts.add(lnkElement.getLinkText());
 					ClickElement clk = new ClickElement();
