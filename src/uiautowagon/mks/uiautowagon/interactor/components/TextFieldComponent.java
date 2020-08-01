@@ -9,9 +9,9 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import mks.uiautowagon.interactor.ElementsStorage;
 import mks.uiautowagon.interactor.WagonerElements;
 import mks.uiautowagon.interactor.patterns.objects.TextField;
+import mks.uiautowagon.interactor.store.ElementsStore;
 import mks.uiautowagon.interactor.store.TextFieldsStore;
 
 public class TextFieldComponent implements WagonerElements {

@@ -1,0 +1,4 @@
+URL,Result,ErrorMessage
+https://www.netflix.com/in/,FAILED,Found NullPointerException while performing action on element, and the exception is: null
+https://www.facebook.com/,PASSED
+https://www.flipkart.com/,FAILED,Found NullPointerException while performing action on element, and the exception is: null

@@ -27,6 +27,7 @@ import mks.uiautowagon.interactor.patterns.objects.RadioButton;
 import mks.uiautowagon.interactor.patterns.objects.TextField;
 import mks.uiautowagon.interactor.store.ButtonStore;
 import mks.uiautowagon.interactor.store.CheckboxStore;
+import mks.uiautowagon.interactor.store.ElementsStore;
 import mks.uiautowagon.interactor.store.FramesStore;
 import mks.uiautowagon.interactor.store.LinkStore;
 import mks.uiautowagon.interactor.store.OtherStore;
@@ -48,7 +49,7 @@ public class DomReader {
 
 		List<WebElement> allElements = driver.findElements(By.xpath("//body//input|//body//a|//body//button")); //[not(contains(@style,'display:none'))]		//body//*
 		System.out.println("inputElements size is : " + allElements.size());
-		ElementsStorage elementsStore = new ElementsStorage();
+		ElementsStore elementsStore = new ElementsStore();
 
 		int textfieldCount = 1;
 		int checkboxCount = 1;

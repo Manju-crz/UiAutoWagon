@@ -11,6 +11,7 @@ import mks.uiautowagon.interactor.patterns.TextFieldPatterns;
 import mks.uiautowagon.interactor.patterns.objects.RadioButton;
 import mks.uiautowagon.interactor.store.ButtonStore;
 import mks.uiautowagon.interactor.store.CheckboxStore;
+import mks.uiautowagon.interactor.store.ElementsStore;
 import mks.uiautowagon.interactor.store.LinkStore;
 import mks.uiautowagon.interactor.store.RadioButtonStore;
 import mks.uiautowagon.interactor.store.TextFieldsStore;
@@ -37,7 +38,7 @@ public class WagonerFacade extends MyDriver{
 	
 	
 	private void clearLocators() {
-		ElementsStorage.allElements.clear();
+		ElementsStore.allElements.clear();
 		TextFieldsStore.textFieldsList.clear();
 		ButtonStore.buttonList.clear();
 		CheckboxStore.checkboxList.clear();
@@ -56,7 +57,7 @@ public class WagonerFacade extends MyDriver{
 	
 
 	public void getCount() {
-		ElementsStorage es = new ElementsStorage();
+		ElementsStore es = new ElementsStore();
 		System.out.println("es.allElements.size() is : " + es.allElements.size());
 		
 		ButtonStore btnStore = new ButtonStore();

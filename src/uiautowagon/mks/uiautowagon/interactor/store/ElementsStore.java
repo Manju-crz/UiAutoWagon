@@ -1,12 +1,11 @@
-package mks.uiautowagon.interactor;
+package mks.uiautowagon.interactor.store;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.openqa.selenium.WebElement;
 
-public class ElementsStorage {
+public class ElementsStore {
 	
 	public static List<HashMap<String, Object>> allElements = new ArrayList<>();
 	
