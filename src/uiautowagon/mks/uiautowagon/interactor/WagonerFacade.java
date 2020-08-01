@@ -4,49 +4,56 @@ import org.openqa.selenium.WebDriver;
 
 import mks.uiautowagon.interactor.components.ButtonComponent;
 import mks.uiautowagon.interactor.components.CheckBoxComponent;
-import mks.uiautowagon.interactor.components.ClickElementComponent;
 import mks.uiautowagon.interactor.components.LinkComponent;
 import mks.uiautowagon.interactor.components.RadioButtonComponent;
 import mks.uiautowagon.interactor.components.TextFieldComponent;
-import mks.uiautowagon.interactor.patterns.objects.ClickElement;
+import mks.uiautowagon.interactor.patterns.TextFieldPatterns;
 import mks.uiautowagon.interactor.patterns.objects.RadioButton;
 import mks.uiautowagon.interactor.store.ButtonStore;
-import mks.uiautowagon.interactor.store.ClickElementStore;
+import mks.uiautowagon.interactor.store.CheckboxStore;
 import mks.uiautowagon.interactor.store.LinkStore;
 import mks.uiautowagon.interactor.store.RadioButtonStore;
+import mks.uiautowagon.interactor.store.TextFieldsStore;
 
-public class WagonerFacade {
+public class WagonerFacade extends MyDriver{
 
-	static WebDriver driver = null;
 	public TextFieldComponent textField = null;
 	public CheckBoxComponent checkBox = null;
 	public ButtonComponent button = null;
 	public LinkComponent link = null;
-	public ClickElementComponent clickElement = null;
 	public RadioButtonComponent radioButton = null;
 	
 	public WagonerFacade(WebDriver driver) {
 		this.driver = driver;
-		System.out.println("WagonerFacade constructor ...");
 		reload();
-
 	}
 
 	public WagonerFacade reload() {
-		System.out.println("Wagoner dom reloading..");
+		clearLocators();
 		new DomReader(driver).distribute();
+		initiateElements();
+		return this;
+	}
+	
+	
+	private void clearLocators() {
+		ElementsStorage.allElements.clear();
+		TextFieldsStore.textFieldsList.clear();
+		ButtonStore.buttonList.clear();
+		CheckboxStore.checkboxList.clear();
+		LinkStore.linkList.clear();
+		RadioButtonStore.rdoList.clear();
+	}
+	
+	
+	private void initiateElements() {
 		textField = new TextFieldComponent(driver);
 		checkBox = new CheckBoxComponent(driver);
 		button = new ButtonComponent(driver);
 		link = new LinkComponent(driver);
-		clickElement = new ClickElementComponent(driver);
 		radioButton = new RadioButtonComponent(driver);
-		return this;
 	}
-
-	public static WebDriver getDriver() {
-		return driver;
-	}
+	
 
 	public void getCount() {
 		ElementsStorage es = new ElementsStorage();
@@ -57,12 +64,6 @@ public class WagonerFacade {
 		
 		LinkStore lnkStore = new LinkStore();
 		System.out.println("lnkStore.linkList.size() is : " + lnkStore.linkList.size());
-		
-		ClickElementStore clkStore = new ClickElementStore();
-		System.out.println("clkStore.clickELementsList.size() is : " + clkStore.clickELementsList.size());
-		for(ClickElement radioButton: clkStore.clickELementsList) {
-			System.out.println("radioButtons.rdoList : " + radioButton.toString());
-		}
 		
 		RadioButtonStore radioButtons = new RadioButtonStore();
 		System.out.println("radioButtons.rdoList.size() is : " + radioButtons.rdoList.size());

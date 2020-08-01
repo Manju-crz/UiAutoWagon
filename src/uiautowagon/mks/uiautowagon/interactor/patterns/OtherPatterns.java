@@ -25,7 +25,7 @@ public class OtherPatterns {
 	public Other findPattern() {
 
 		Other other = new Other();
-		other.setAttributesStr(new SupportUtil(WagonerFacade.getDriver()).getAttributes(element));
+		other.setAttributesStr(new SupportUtil().getAttributes(element));
 		other.setTagName(element.getTagName());
 		other.setElement(element);
 		return other;

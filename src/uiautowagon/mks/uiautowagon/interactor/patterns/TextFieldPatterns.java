@@ -7,13 +7,14 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.interutil.SupportUtil;
 import mks.uiautowagon.interactor.interutil.TagsFinder;
 import mks.uiautowagon.interactor.patterns.objects.TextField;
 
 public class TextFieldPatterns {
 	
-	private WebElement element = null;
+	//private WebElement element = null;
 	
 	private String placeholder = null;
 	private String label = null;
@@ -22,11 +23,12 @@ public class TextFieldPatterns {
 	private String divNeighbourPlaceholder = null;
 	private String ariaLabel = null;
 	
+	CurrentElement cElement = null;
+	
 	private List<String> acceptedAttributeTypes = new ArrayList<>(Arrays.asList("password", "text", "email"));
 	
-	public TextFieldPatterns(WebElement element) {
-		System.out.println("Beginned to TextFieldPatterns");
-		this.element = element;
+	public TextFieldPatterns(CurrentElement cElement) {
+		this.cElement = cElement;
 	}
 	
 	enum WithinAParentTag {
@@ -43,7 +45,7 @@ public class TextFieldPatterns {
 	
 
 	private boolean isTextField() {
-		String attributeType = element.getAttribute("type");
+		String attributeType = cElement.getElement().getAttribute("type");
 		System.out.println("attributeType is : " + attributeType);
 		if ((attributeType != null) && (acceptedAttributeTypes.contains(attributeType)))
 			return true;
@@ -69,7 +71,7 @@ public class TextFieldPatterns {
 	}
 
 	private boolean isInputTagHavingPlaceholder() {
-		placeholder = element.getAttribute("placeholder");
+		placeholder = cElement.getElement().getAttribute("placeholder");
 		System.out.println("placeholder is : " + placeholder);
 		if (placeholder != null) {
 			return true;
@@ -79,7 +81,7 @@ public class TextFieldPatterns {
 	
 	private boolean isInputTagWithSiblingedLabel() {
 
-		WebElement siblingLabel = new TagsFinder().siblingLabel(element);
+		WebElement siblingLabel = new TagsFinder().siblingLabel(cElement.getElement());
 		if (siblingLabel != null) {
 			label = siblingLabel.getText().trim();
 			return true;
@@ -91,9 +93,9 @@ public class TextFieldPatterns {
 	private boolean isFirstTrHavingLabelsSecondTrHavingInput() {
 
 		if (label == null) {
-			String elementAttribute = new SupportUtil().getAttributes(element);
+			String elementAttribute = new SupportUtil().getAttributes(cElement.getElement());
 			System.out.println("elementAttribute -- " + elementAttribute);
-			WebElement tdParent = new TagsFinder().parentTD(element);
+			WebElement tdParent = new TagsFinder().parentTD(cElement.getElement());
 			if (tdParent != null) {
 				WebElement trParent = new TagsFinder().parentTR(tdParent);
 				if(trParent != null) {
@@ -128,7 +130,7 @@ public class TextFieldPatterns {
 		System.out.println("placeholder at this posiiong is : " + placeholder);
 
 		if ((!isLabelFound()) && (!isPlaceholderFound())) {
-			List<WebElement> siblings = new TagsFinder().siblingDivs(element);
+			List<WebElement> siblings = new TagsFinder().siblingDivs(cElement.getElement());
 			System.out.println("Found siblings divs are : " + siblings.size());
 
 			for (WebElement tempElement : siblings) {
@@ -161,7 +163,7 @@ public class TextFieldPatterns {
 	
 	private boolean isInputTagHavingAriaLabelholder() {
 		if ((label == null) && (placeholder == null)) {
-			ariaLabel = element.getAttribute("aria-label").trim();
+			ariaLabel = cElement.getElement().getAttribute("aria-label").trim();
 			return true;
 		}
 		return false;
@@ -183,7 +185,8 @@ public class TextFieldPatterns {
 			System.out.println("divNeighbourPlaceholder finally fnd is : " + divNeighbourPlaceholder);
 			tf.setDivNeighbourPlaceholder(divNeighbourPlaceholder);
 			tf.setAriaLabel(ariaLabel);
-			tf.setElement(element);
+			//tf.setElement(element);
+			tf.setcElement(cElement);
 			return tf;
 		}
 		return null;

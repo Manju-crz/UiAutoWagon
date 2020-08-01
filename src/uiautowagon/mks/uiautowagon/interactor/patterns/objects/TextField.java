@@ -3,16 +3,20 @@ package mks.uiautowagon.interactor.patterns.objects;
 
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
+
 public class TextField {
 
 	private String placeholder = null;
 	private String labelText = null;
 	private String labelFor = null;
-	private WebElement element = null;
 	private String trParallelLabel = null;
 
 	private String divNeighbourPlaceholder = null;
 	private String ariaLabel = null;
+	
+	
+	private CurrentElement cElement = null;
 	
 	public String getPlaceholder() {
 		return placeholder;
@@ -61,29 +65,29 @@ public class TextField {
 	public void setAriaLabel(String ariaLabel) {
 		this.ariaLabel = ariaLabel;
 	}
-	
-	public WebElement getElement() {
-		return element;
+
+	public CurrentElement getcElement() {
+		return cElement;
 	}
 
-	public void setElement(WebElement element) {
-		this.element = element;
+	public void setcElement(CurrentElement cElement) {
+		this.cElement = cElement;
 	}
 
 	public WebElement compare(String elementText) {
 
 		if ((placeholder != null) && placeholder.trim().equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		else if ((labelText != null) && labelText.trim().equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		else if ((labelFor != null) && labelFor.trim().equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		else if ((trParallelLabel != null) && trParallelLabel.trim().equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		else if ((divNeighbourPlaceholder != null) && divNeighbourPlaceholder.trim().equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		else if ((ariaLabel != null) && ariaLabel.trim().equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		return null;
 	}
 	
@@ -98,8 +102,8 @@ public class TextField {
 		if (labelFor != null) {
 			str.append("LabelFor : " + labelFor);
 		}
-		if (element != null) {
-			str.append("Element tag : " + element.getTagName());
+		if (cElement.getElement() != null) {
+			str.append("Element tag : " + cElement.getTagName());
 		}
 		return str.toString();
 	}

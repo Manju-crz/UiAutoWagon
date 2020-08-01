@@ -8,18 +8,15 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.MyDriver;
 import mks.uiautowagon.interactor.WagonerFacade;
 
 public class SupportUtil {
 
 	protected WebDriver driver = null;
 
-	public SupportUtil(WebDriver driver) {
-		this.driver = driver;
-	}
-	
 	public SupportUtil() {
-		driver = WagonerFacade.getDriver();
+		this.driver = MyDriver.getDriver();
 	}
 	
 	public String getAttributes(WebElement element) {

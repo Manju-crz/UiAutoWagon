@@ -2,9 +2,7 @@ package mks.uiautowagon.interactor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -22,7 +20,6 @@ import mks.uiautowagon.interactor.patterns.RadioButtonPatterns;
 import mks.uiautowagon.interactor.patterns.TextFieldPatterns;
 import mks.uiautowagon.interactor.patterns.objects.Button;
 import mks.uiautowagon.interactor.patterns.objects.Checkbox;
-import mks.uiautowagon.interactor.patterns.objects.ClickElement;
 import mks.uiautowagon.interactor.patterns.objects.Frames;
 import mks.uiautowagon.interactor.patterns.objects.Link;
 import mks.uiautowagon.interactor.patterns.objects.Other;
@@ -30,7 +27,6 @@ import mks.uiautowagon.interactor.patterns.objects.RadioButton;
 import mks.uiautowagon.interactor.patterns.objects.TextField;
 import mks.uiautowagon.interactor.store.ButtonStore;
 import mks.uiautowagon.interactor.store.CheckboxStore;
-import mks.uiautowagon.interactor.store.ClickElementStore;
 import mks.uiautowagon.interactor.store.FramesStore;
 import mks.uiautowagon.interactor.store.LinkStore;
 import mks.uiautowagon.interactor.store.OtherStore;
@@ -40,18 +36,17 @@ import mks.uiautowagon.interactor.store.TextFieldsStore;
 public class DomReader {
 
 	private WebDriver driver = null;
-	
 	private List<String> tags = new ArrayList<String>(Arrays.asList("input","a","button"));
 	
 	
 	DomReader(WebDriver driver) {
-		this.driver = driver;
+		this.driver = MyDriver.getDriver();
 	}
 	
 	
 	void distribute() {
 
-		List<WebElement> allElements = driver.findElements(By.xpath("//body//*")); //[not(contains(@style,'display:none'))]
+		List<WebElement> allElements = driver.findElements(By.xpath("//body//input|//body//a|//body//button")); //[not(contains(@style,'display:none'))]		//body//*
 		System.out.println("inputElements size is : " + allElements.size());
 		ElementsStorage elementsStore = new ElementsStorage();
 
@@ -68,25 +63,23 @@ public class DomReader {
 		OtherStore os = new OtherStore();
 		FramesStore fs = new FramesStore();
 		LinkStore lk = new LinkStore();
-		ClickElementStore ces = new ClickElementStore();
 		RadioButtonStore rdos = new RadioButtonStore();
 		
-		int runningCount = 1;
 		for (WebElement element : allElements) {
-			System.out.println("runningCount s: " + (runningCount++));
+			
+			CurrentElement cElement = new CurrentElement();
+			cElement.setElement(element);
+			
 			String allAttributes = null;
 			try {
-				allAttributes = new SupportUtil(driver).getAttributes(element);
+				allAttributes = new SupportUtil().getAttributes(element);
 				element.isDisplayed();
 			} catch (StaleElementReferenceException | NoSuchElementException e) {
 				continue;
 			}
-
-			String currentTagName = element.getTagName();
-			System.out.println(">>>>>>>>>>>>>>>> Started identifying for : " + currentTagName);
-			if (!tags.contains(currentTagName)) {
-				continue;
-			}
+			cElement.setAttributes(allAttributes);
+			cElement.setTagName(element.getTagName());
+			System.out.println(">>>>>>>>>>>>>>>> Started identifying for : " + cElement.getTagName());
 			System.out.println("allAttributes are : " + allAttributes);
 
 			if ((allAttributes != null) && allAttributes.contains("=")) {
@@ -98,7 +91,7 @@ public class DomReader {
 					continue;
 				}
 
-				TextField textfieldEement = new TextFieldPatterns(element).findPattern();
+				TextField textfieldEement = new TextFieldPatterns(cElement).findPattern();
 				if (textfieldEement != null) {
 					elementsStore.add("Textfield" + textfieldCount, textfieldEement);
 					tfs.add(textfieldEement);
@@ -113,37 +106,22 @@ public class DomReader {
 					checkboxCount++;
 					continue;
 				}
-
-				Button buttonElement = new ButtonPatterns(element).findPattern();
+				
+				ButtonPatterns buttonPatterns = new ButtonPatterns(element);
+				Button buttonElement = buttonPatterns.findPattern();
 				if (buttonElement != null) {
 					elementsStore.add("Button" + buttonCount, buttonElement);
 					bs.add(buttonElement);
 					buttonCount++;
-
-					Set<String> clickTxts = new HashSet<>();
-					clickTxts.add(buttonElement.getButtonText());
-					clickTxts.addAll(buttonElement.getButtonInnerSpanTexts());
-					clickTxts.add(buttonElement.getInputValueText());
-					clickTxts.addAll(buttonElement.getSiblingSpanTexts());
-					ClickElement clk = new ClickElement();
-					clk.setElementText(clickTxts);
-					clk.setElement(element);
-					ces.add(clk);
 					continue;
 				}
 
-				Link lnkElement = new LinkPatterns(element).findPattern();
+				LinkPatterns linkPatterns = new LinkPatterns(element); 
+				Link lnkElement = linkPatterns.findPattern();
 				if (lnkElement != null) {
 					elementsStore.add("Link" + lnkCount, lnkElement);
 					lk.add(lnkElement);
 					lnkCount++;
-
-					Set<String> clickTxts = new HashSet<>();
-					clickTxts.add(lnkElement.getLinkText());
-					ClickElement clk = new ClickElement();
-					clk.setElementText(clickTxts);
-					clk.setElement(element);
-					ces.add(clk);
 					continue;
 				}
 

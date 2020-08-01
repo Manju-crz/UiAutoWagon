@@ -165,11 +165,6 @@ public class NewPatternTry extends DriverBase{
 		Sleep.for2Seconds();
 		//clickOnLocation(wagoner.clickElement.get("LOGIN"));
 		
-		wagoner.clickElement.get("LOGIN").click();
-		Sleep.for2Seconds();
-		wagoner.clickElement.get("Forgot Password?").click();
-		Sleep.for5Seconds();
-		
 	}
 	
 }
