@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 
 import mks.uiautowagon.interactor.components.ButtonComponent;
 import mks.uiautowagon.interactor.components.CheckBoxComponent;
+import mks.uiautowagon.interactor.components.ClickElementComponent;
 import mks.uiautowagon.interactor.components.LinkComponent;
 import mks.uiautowagon.interactor.components.RadioButtonComponent;
 import mks.uiautowagon.interactor.components.TextFieldComponent;
@@ -11,6 +12,7 @@ import mks.uiautowagon.interactor.patterns.TextFieldPatterns;
 import mks.uiautowagon.interactor.patterns.objects.RadioButton;
 import mks.uiautowagon.interactor.store.ButtonStore;
 import mks.uiautowagon.interactor.store.CheckboxStore;
+import mks.uiautowagon.interactor.store.ClickElementsStore;
 import mks.uiautowagon.interactor.store.ElementsStore;
 import mks.uiautowagon.interactor.store.LinkStore;
 import mks.uiautowagon.interactor.store.RadioButtonStore;
@@ -24,9 +26,14 @@ public class WagonerFacade extends MyDriver{
 	public LinkComponent link = null;
 	public RadioButtonComponent radioButton = null;
 	
+	public ClickElementComponent clickElement = null;
+	
 	public WagonerFacade(WebDriver driver) {
 		this.driver = driver;
 		reload();
+	}
+
+	public WagonerFacade() {
 	}
 
 	public WagonerFacade reload() {
@@ -53,6 +60,7 @@ public class WagonerFacade extends MyDriver{
 		button = new ButtonComponent(driver);
 		link = new LinkComponent(driver);
 		radioButton = new RadioButtonComponent(driver);
+		clickElement = new ClickElementComponent(driver);
 	}
 	
 
@@ -71,6 +79,8 @@ public class WagonerFacade extends MyDriver{
 		for(RadioButton radioButton: radioButtons.rdoList) {
 			System.out.println("radioButtons.rdoList : " + radioButton.toString());
 		}
+		System.out.println("Clickeleent store : " + ClickElementsStore.clickElements.size());
+		System.out.println("Clickeleent store : " + ClickElementsStore.clickElements);
 		
 	}
 

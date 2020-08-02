@@ -70,19 +70,19 @@ public class Button {
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		if (buttonText != null) {
-			str.append("Button Text : " + buttonText);
+			str.append("Button Text : " + buttonText + ";");
 		}
 		if (!buttonInnerSpanTexts.isEmpty()) {
-			str.append("Button Inner Span Texts : " + buttonInnerSpanTexts);
+			str.append("Button Inner Span Texts : " + buttonInnerSpanTexts + ";");
 		}
 		if (!inputValueText.isEmpty()) {
-			str.append("Input Value Text" + inputValueText);
+			str.append("Input Value Text" + inputValueText + ";");
 		}
 		if (!siblingSpanTexts.isEmpty()) {
-			str.append("Sibling SpanT exts" + siblingSpanTexts);
+			str.append("Sibling SpanTexts" + siblingSpanTexts + ";");
 		}
 		if (element != null) {
-			str.append("Element tag : " + element.getTagName());
+			//str.append("ElementTag : " + element.getTagName());
 		}
 		return str.toString();
 	}

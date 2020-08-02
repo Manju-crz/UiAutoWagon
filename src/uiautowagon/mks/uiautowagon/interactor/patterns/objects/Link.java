@@ -37,7 +37,7 @@ public class Link {
 			str.append("Link Text : " + linkText);
 		}
 		if (element != null) {
-			str.append("Element tag : " + element.getTagName());
+			//str.append("Element tag : " + element.getTagName());
 		}
 		return str.toString();
 	}

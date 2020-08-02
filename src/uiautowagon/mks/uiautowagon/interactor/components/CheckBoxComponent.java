@@ -4,7 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import mks.uiautowagon.interactor.WagonerElements;
+import mks.uiautowagon.interactor.WagonerFacade;
 import mks.uiautowagon.interactor.store.CheckboxStore;
+import mks.uiautowagon.interactor.store.RadioButtonStore;
 import mks.uiautowagon.interactor.store.TextFieldsStore;
 
 public class CheckBoxComponent implements WagonerElements {
@@ -16,8 +18,12 @@ public class CheckBoxComponent implements WagonerElements {
 
 	@Override
 	public WebElement get(String label) {
-
-		return new CheckboxStore().find(label);
+		WebElement element = new CheckboxStore().find(label);
+		if (element == null) {
+			new WagonerFacade().reload();
+			element = new CheckboxStore().find(label);
+		}
+		return element;
 	}
 
 	@Override

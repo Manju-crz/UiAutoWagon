@@ -27,6 +27,7 @@ import mks.uiautowagon.interactor.patterns.objects.RadioButton;
 import mks.uiautowagon.interactor.patterns.objects.TextField;
 import mks.uiautowagon.interactor.store.ButtonStore;
 import mks.uiautowagon.interactor.store.CheckboxStore;
+import mks.uiautowagon.interactor.store.ClickElementsStore;
 import mks.uiautowagon.interactor.store.ElementsStore;
 import mks.uiautowagon.interactor.store.FramesStore;
 import mks.uiautowagon.interactor.store.LinkStore;
@@ -50,7 +51,8 @@ public class DomReader {
 		List<WebElement> allElements = driver.findElements(By.xpath("//body//input|//body//a|//body//button")); //[not(contains(@style,'display:none'))]		//body//*
 		System.out.println("inputElements size is : " + allElements.size());
 		ElementsStore elementsStore = new ElementsStore();
-
+		ClickElementsStore clickElementsStore = new ClickElementsStore();
+		
 		int textfieldCount = 1;
 		int checkboxCount = 1;
 		int buttonCount = 1;
@@ -65,6 +67,7 @@ public class DomReader {
 		FramesStore fs = new FramesStore();
 		LinkStore lk = new LinkStore();
 		RadioButtonStore rdos = new RadioButtonStore();
+		
 		
 		for (WebElement element : allElements) {
 			
@@ -112,6 +115,12 @@ public class DomReader {
 				Button buttonElement = buttonPatterns.findPattern();
 				if (buttonElement != null) {
 					elementsStore.add("Button" + buttonCount, buttonElement);
+					System.out.println("Adding clickElementsStore button : " + "Button" + buttonCount);
+					System.out.println(">>> " + buttonElement.getButtonText());
+					System.out.println(">>> " + buttonElement.getButtonInnerSpanTexts());
+					System.out.println(">>> " + buttonElement.getInputValueText());
+					System.out.println(">>> " + buttonElement.getSiblingSpanTexts());
+					clickElementsStore.add("Button" + buttonCount, buttonElement);
 					bs.add(buttonElement);
 					buttonCount++;
 					continue;
@@ -121,6 +130,9 @@ public class DomReader {
 				Link lnkElement = linkPatterns.findPattern();
 				if (lnkElement != null) {
 					elementsStore.add("Link" + lnkCount, lnkElement);
+					System.out.println("Adding clickElementsStore Link : " + "Link" + lnkCount);
+					System.out.println("=== " + lnkElement.getLinkText() );
+					clickElementsStore.add("Link" + lnkCount, lnkElement);
 					lk.add(lnkElement);
 					lnkCount++;
 					continue;

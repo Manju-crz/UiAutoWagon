@@ -4,7 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import mks.uiautowagon.interactor.WagonerElements;
+import mks.uiautowagon.interactor.WagonerFacade;
 import mks.uiautowagon.interactor.store.RadioButtonStore;
+import mks.uiautowagon.interactor.store.TextFieldsStore;
 
 public class RadioButtonComponent implements WagonerElements{
 
@@ -14,7 +16,13 @@ public class RadioButtonComponent implements WagonerElements{
 	}
 	@Override
 	public WebElement get(String label) {
-		return new RadioButtonStore().find(label);
+		
+		WebElement element = new RadioButtonStore().find(label);
+		if (element == null) {
+			new WagonerFacade().reload();
+			element = new RadioButtonStore().find(label);
+		}
+		return element;
 	}
 	@Override
 	public WebElement get(String label, int position) {
