@@ -5,15 +5,26 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
+
 public class Checkbox {
 
 	private String checkBoxLabel = null;
 	private List<String> spanTexts = new ArrayList<String>();
 	private boolean isParentElementAnchor = false;
-	private WebElement element = null;
 
 	private String parentLabelText = null;
 	private String grandParentLabelText = null;
+
+	private CurrentElement cElement = null;
+	
+	public CurrentElement getcElement() {
+		return cElement;
+	}
+
+	public void setcElement(CurrentElement cElement) {
+		this.cElement = cElement;
+	}
 
 	public String getParentLabelText() {
 		return parentLabelText;
@@ -55,24 +66,16 @@ public class Checkbox {
 		this.isParentElementAnchor = isParentElementAnchor;
 	}
 
-	public WebElement getElement() {
-		return element;
-	}
-
-	public void setElement(WebElement element) {
-		this.element = element;
-	}
-
 	public WebElement compare(String elementText) {
 
 		if ((checkBoxLabel != null) && checkBoxLabel.equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		else if (spanTexts.contains(elementText))
-			return element;
+			return cElement.getElement();
 		else if ((parentLabelText != null) && parentLabelText.equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		else if ((grandParentLabelText != null) && grandParentLabelText.equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		return null;
 	}
 	
@@ -84,8 +87,8 @@ public class Checkbox {
 		if (!spanTexts.isEmpty()) {
 			str.append("CheckBox SpanTexts : " + spanTexts);
 		}
-		if (element != null) {
-			str.append("Element tag : " + element.getTagName());
+		if (cElement.getElement() != null) {
+			str.append("Element tag : " + cElement.getTagName());
 		}
 		return str.toString();
 	}

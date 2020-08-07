@@ -3,6 +3,7 @@ package mks.uiautowagon.interactor.components;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.MyDriver;
 import mks.uiautowagon.interactor.WagonerElements;
 import mks.uiautowagon.interactor.WagonerFacade;
 import mks.uiautowagon.interactor.store.TextFieldsStore;
@@ -11,8 +12,8 @@ public class TextFieldComponent implements WagonerElements {
 
 	WebDriver driver = null;
 
-	public TextFieldComponent(WebDriver driver) {
-		this.driver = driver;
+	public TextFieldComponent() {
+		this.driver = MyDriver.getDriver();
 	}
 
 	@Override

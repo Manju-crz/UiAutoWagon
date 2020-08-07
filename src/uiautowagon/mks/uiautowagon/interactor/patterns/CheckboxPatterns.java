@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.interutil.SupportUtil;
 import mks.uiautowagon.interactor.interutil.TagsFinder;
 import mks.uiautowagon.interactor.patterns.objects.Checkbox;
@@ -13,7 +14,6 @@ import mks.uiautowagon.interactor.patterns.objects.TextField;
 public class CheckboxPatterns {
 
 
-	private WebElement element = null;
 	private String label = null;
 	private List<String> spanTexts = new ArrayList<>();
 	private boolean isAnchorParent = false;
@@ -21,9 +21,10 @@ public class CheckboxPatterns {
 	private String parentLabelText = null;
 	private String grandParentLabelText = null;
 
-	public CheckboxPatterns(WebElement element) {
-		System.out.println("Beginned to CheckboxPatterns");
-		this.element = element;
+	CurrentElement cElement = null;
+	
+	public CheckboxPatterns(CurrentElement cElement) {
+		this.cElement = cElement;
 	}
 	
 
@@ -43,14 +44,14 @@ public class CheckboxPatterns {
 	}
 	
 	private boolean isCheckbox() {
-		String attributeType = element.getAttribute("type");
+		String attributeType = cElement.getTypeAttribute();
 		if ((attributeType != null) && (attributeType.equalsIgnoreCase("checkbox")))
 			return true;
 		return false;
 	}
 	
 	private boolean isInputTagWithSiblingedLabel() {
-		WebElement siblingLabel = new TagsFinder().siblingLabel(element);
+		WebElement siblingLabel = new TagsFinder().siblingLabel(cElement.getElement());
 		if (siblingLabel == null)
 			return false;
 		label = siblingLabel.getText();
@@ -61,17 +62,17 @@ public class CheckboxPatterns {
 	}
 	
 	private boolean isInputTagWithSiblingedSpanTexts() {
-		spanTexts = new SupportUtil().getElementsText(new TagsFinder().siblingSpans(element));
+		spanTexts = new SupportUtil().getElementsText(new TagsFinder().siblingSpans(cElement.getElement()));
 		return spanTexts.isEmpty();
 	}
 	
 	private boolean isInputTagWithWithAnchorParent() {
-		WebElement parentElement = new TagsFinder().parentElement(element);
+		WebElement parentElement = new TagsFinder().parentElement(cElement.getElement());
 		return parentElement.getTagName().equalsIgnoreCase("a");
 	}
 
 	private boolean isInputTagwithParentLabel() {
-		WebElement parentElement = new TagsFinder().parentElement(element);
+		WebElement parentElement = new TagsFinder().parentElement(cElement.getElement());
 		if (parentElement.getTagName().equalsIgnoreCase("label")) {
 			parentLabelText = parentElement.getText().trim();
 			return true;
@@ -80,7 +81,7 @@ public class CheckboxPatterns {
 	}
 
 	private boolean isInputTagwithGrandParentLabel() {
-		WebElement parentElement = new TagsFinder().parentElement(element);
+		WebElement parentElement = new TagsFinder().parentElement(cElement.getElement());
 		WebElement grandParent = new TagsFinder().parentElement(parentElement);
 		if (grandParent.getTagName().equalsIgnoreCase("label")) {
 			grandParentLabelText = grandParent.getText().trim();
@@ -102,7 +103,7 @@ public class CheckboxPatterns {
 			chk.setParentLabelText(parentLabelText);
 			chk.setGrandParentLabelText(grandParentLabelText);
 			chk.setParentElementAnchor(isAnchorParent);
-			chk.setElement(element);
+			chk.setcElement(cElement);
 			return chk;
 		}
 		return null;

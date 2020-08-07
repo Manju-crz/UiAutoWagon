@@ -1,7 +1,5 @@
 package mks.uiautowagon.interactor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -38,8 +36,6 @@ import mks.uiautowagon.interactor.store.TextFieldsStore;
 public class DomReader {
 
 	private WebDriver driver = null;
-	private List<String> tags = new ArrayList<String>(Arrays.asList("input","a","button"));
-	
 	
 	DomReader(WebDriver driver) {
 		this.driver = MyDriver.getDriver();
@@ -73,16 +69,14 @@ public class DomReader {
 			
 			CurrentElement cElement = new CurrentElement();
 			cElement.setElement(element);
-			
 			String allAttributes = null;
 			try {
-				allAttributes = new SupportUtil().getAttributes(element);
 				element.isDisplayed();
+				allAttributes = cElement.getAttributes();
 			} catch (StaleElementReferenceException | NoSuchElementException e) {
 				continue;
 			}
-			cElement.setAttributes(allAttributes);
-			cElement.setTagName(element.getTagName());
+			
 			System.out.println(">>>>>>>>>>>>>>>> Started identifying for : " + cElement.getTagName());
 			System.out.println("allAttributes are : " + allAttributes);
 
@@ -103,7 +97,7 @@ public class DomReader {
 					continue;
 				}
 
-				Checkbox checkboxElement = new CheckboxPatterns(element).findPattern();
+				Checkbox checkboxElement = new CheckboxPatterns(cElement).findPattern();
 				if (checkboxElement != null) {
 					elementsStore.add("Checkbox" + checkboxCount, checkboxElement);
 					cbs.add(checkboxElement);
@@ -111,7 +105,7 @@ public class DomReader {
 					continue;
 				}
 				
-				ButtonPatterns buttonPatterns = new ButtonPatterns(element);
+				ButtonPatterns buttonPatterns = new ButtonPatterns(cElement);
 				Button buttonElement = buttonPatterns.findPattern();
 				if (buttonElement != null) {
 					elementsStore.add("Button" + buttonCount, buttonElement);
@@ -126,7 +120,7 @@ public class DomReader {
 					continue;
 				}
 
-				LinkPatterns linkPatterns = new LinkPatterns(element); 
+				LinkPatterns linkPatterns = new LinkPatterns(cElement); 
 				Link lnkElement = linkPatterns.findPattern();
 				if (lnkElement != null) {
 					elementsStore.add("Link" + lnkCount, lnkElement);
@@ -138,7 +132,7 @@ public class DomReader {
 					continue;
 				}
 
-				RadioButton rdoElement = new RadioButtonPatterns(element).findPattern();
+				RadioButton rdoElement = new RadioButtonPatterns(cElement).findPattern();
 				if (rdoElement != null) {
 					elementsStore.add("Radio" + rdoCount, rdoElement);
 					rdos.add(rdoElement);
@@ -146,7 +140,7 @@ public class DomReader {
 					continue;
 				}
 
-				Other otherElement = new OtherPatterns(element).findPattern();
+				Other otherElement = new OtherPatterns(cElement).findPattern();
 				if (otherElement != null) {
 					elementsStore.add("Other" + otherCount, otherElement);
 					os.add(otherElement);

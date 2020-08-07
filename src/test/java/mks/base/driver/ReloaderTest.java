@@ -69,11 +69,10 @@ public class ReloaderTest extends DriverBase {
 		wagoner.clickElement.get("LOGIN").click();
 		Sleep.for5Seconds();
 	}
-
 	
 	
 	
-	@Test
+	//@Test
 	public void testFacebook() {
 
 		String url = "https://www.facebook.com/";
@@ -93,7 +92,7 @@ public class ReloaderTest extends DriverBase {
 		Sleep.for5Seconds();
 	}
 
-	// @Test
+	@Test
 	public void testMarketoClickElementTest() {
 
 		String url = "https://app-sjqe.marketo.com/";
@@ -101,7 +100,8 @@ public class ReloaderTest extends DriverBase {
 		WagonerFacade wagoner = new WagonerFacade(driver);
 		wagoner.textField.get("Email").sendKeys("sadsads");
 		Sleep.for2Seconds();
-
+		wagoner.checkBox.get("Remember Email").click();
+		Sleep.for2Seconds();
 	}
 
 }

@@ -8,6 +8,7 @@ import java.util.Set;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.MyDriver;
 import mks.uiautowagon.interactor.WagonerElements;
 import mks.uiautowagon.interactor.WagonerFacade;
 import mks.uiautowagon.interactor.patterns.objects.Button;
@@ -18,8 +19,8 @@ import mks.uiautowagon.interactor.store.ClickElementsStore;
 public class ClickElementComponent implements WagonerElements {
 
 	WebDriver driver = null;
-	public ClickElementComponent(WebDriver driver) {
-		this.driver = driver;
+	public ClickElementComponent() {
+		this.driver = MyDriver.getDriver();
 	}
 
 	@Override

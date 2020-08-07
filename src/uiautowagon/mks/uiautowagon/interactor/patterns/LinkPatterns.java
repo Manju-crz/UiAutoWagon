@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.interutil.SupportUtil;
 import mks.uiautowagon.interactor.interutil.TagsFinder;
 import mks.uiautowagon.interactor.patterns.objects.Link;
@@ -15,13 +16,13 @@ import mks.uiautowagon.interactor.patterns.objects.TextField;
 
 public class LinkPatterns {
 	
-	private WebElement element = null;
 	private String linkText = null;
+
+	CurrentElement cElement = null;
 	
 	
-	public LinkPatterns(WebElement element) {
-		System.out.println("Beginned to TextFieldPatterns");
-		this.element = element;
+	public LinkPatterns(CurrentElement cElement) {
+		this.cElement = cElement;
 	}
 
 	enum WithinAnchorTag {
@@ -29,10 +30,8 @@ public class LinkPatterns {
 	}
 
 	private boolean isLink() {
-		String tag = element.getTagName();
-		System.out.println("attributeType is : " + tag);
-		if (tag.equalsIgnoreCase("a")) {
-			List<WebElement> innerElements = new TagsFinder().innerInputElements(element);
+		if (cElement.getTagName().equalsIgnoreCase("a")) {
+			List<WebElement> innerElements = new TagsFinder().innerInputElements(cElement.getElement());
 			System.out.println("innerElements are : " + innerElements.size());
 			if (innerElements.size() != 0) {
 				return false;
@@ -43,7 +42,7 @@ public class LinkPatterns {
 	}
 
 	private boolean isLinkTextFound() {
-		String linkTxt = element.getText();
+		String linkTxt = cElement.getElementText();
 		if (linkTxt != null) {
 			linkText = linkTxt.trim();
 			return true;
@@ -56,7 +55,7 @@ public class LinkPatterns {
 			Link lnk = new Link();
 			isLinkTextFound();
 			lnk.setLinkText(linkText);
-			lnk.setElement(element);
+			lnk.setcElement(cElement);
 			return lnk;
 		}
 		return null;

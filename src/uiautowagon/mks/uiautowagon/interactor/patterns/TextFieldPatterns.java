@@ -14,8 +14,6 @@ import mks.uiautowagon.interactor.patterns.objects.TextField;
 
 public class TextFieldPatterns {
 	
-	//private WebElement element = null;
-	
 	private String placeholder = null;
 	private String label = null;
 	private String trParallelLabel = null;

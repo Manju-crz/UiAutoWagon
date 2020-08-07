@@ -1,33 +1,33 @@
 package mks.uiautowagon.interactor.patterns.objects;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.openqa.selenium.WebElement;
+
+import mks.uiautowagon.interactor.CurrentElement;
 
 public class Link {
 
 	private String linkText = null;
-	private WebElement element = null;
 	
+	private CurrentElement cElement = null;
+	
+	public CurrentElement getcElement() {
+		return cElement;
+	}
+	public void setcElement(CurrentElement cElement) {
+		this.cElement = cElement;
+	}
 	public String getLinkText() {
 		return linkText;
 	}
 	public void setLinkText(String linkText) {
 		this.linkText = linkText;
 	}
-	public WebElement getElement() {
-		return element;
-	}
-	public void setElement(WebElement element) {
-		this.element = element;
-	}
 	
 
 	public WebElement compare(String elementText) {
 
 		if ((linkText != null) && linkText.trim().equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		return null;
 	}
 	
@@ -36,8 +36,8 @@ public class Link {
 		if (linkText != null) {
 			str.append("Link Text : " + linkText);
 		}
-		if (element != null) {
-			//str.append("Element tag : " + element.getTagName());
+		if (cElement.getElement() != null) {
+			str.append("Element tag : " + cElement.getTagName());
 		}
 		return str.toString();
 	}

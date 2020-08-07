@@ -55,12 +55,12 @@ public class WagonerFacade extends MyDriver{
 	
 	
 	private void initiateElements() {
-		textField = new TextFieldComponent(driver);
-		checkBox = new CheckBoxComponent(driver);
-		button = new ButtonComponent(driver);
-		link = new LinkComponent(driver);
-		radioButton = new RadioButtonComponent(driver);
-		clickElement = new ClickElementComponent(driver);
+		textField = new TextFieldComponent();
+		checkBox = new CheckBoxComponent();
+		button = new ButtonComponent();
+		link = new LinkComponent();
+		radioButton = new RadioButtonComponent();
+		clickElement = new ClickElementComponent();
 	}
 	
 

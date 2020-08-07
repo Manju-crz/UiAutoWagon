@@ -5,24 +5,22 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.interutil.SupportUtil;
 import mks.uiautowagon.interactor.interutil.TagsFinder;
 import mks.uiautowagon.interactor.patterns.objects.RadioButton;
 
 public class RadioButtonPatterns {
 
-	
-	private WebElement element = null;
-	
 	private String siblingLabel = null;
 	private String parentLabelText = null;
 	private String parentDivText = null;
 	private String divParentingToInputWithParentSiblingText = null;
 	
-
-	public RadioButtonPatterns(WebElement element) {
-		System.out.println("Beginned to CheckboxPatterns");
-		this.element = element;
+	CurrentElement cElement = null;
+	
+	public RadioButtonPatterns(CurrentElement cElement) {
+		this.cElement = cElement;
 	}
 	
 
@@ -34,16 +32,16 @@ public class RadioButtonPatterns {
 	}
 	
 	private boolean isRadioButton() {
-		String attributeType = element.getAttribute("type");
+		String attributeType = cElement.getTypeAttribute();
 		if ((attributeType != null) && (attributeType.equalsIgnoreCase("radio")))
 			return true;
 		return false;
 	}
 	
 	private boolean isSiblingedInputAndLabels() {
-		String attributes = new SupportUtil().getAttributes(element).trim();
-		List<WebElement> siblingInputs = new TagsFinder().siblingInputs(element);
-		List<WebElement> siblingLabels = new TagsFinder().siblingLabels(element);
+		String attributes = cElement.getAttributes();
+		List<WebElement> siblingInputs = new TagsFinder().siblingInputs(cElement.getElement());
+		List<WebElement> siblingLabels = new TagsFinder().siblingLabels(cElement.getElement());
 		for (int i = 0; i < siblingInputs.size(); i++) {
 			if (new SupportUtil().getAttributes(siblingInputs.get(i)).equalsIgnoreCase(attributes)) {
 				if (i < siblingLabels.size()) {
@@ -58,7 +56,7 @@ public class RadioButtonPatterns {
 	}
 	
 	private boolean isLabelParentingToInput() {
-		WebElement parentElement = new TagsFinder().parentElement(element);
+		WebElement parentElement = new TagsFinder().parentElement(cElement.getElement());
 		if (parentElement.getTagName().equalsIgnoreCase("label")) {
 			parentLabelText = parentElement.getText().trim();
 			return true;
@@ -68,7 +66,7 @@ public class RadioButtonPatterns {
 	
 	private boolean isDivParentingToInput() {
 		if ((!isSiblingedInputAndLabels()) && (!isLabelParentingToInput())) {
-			WebElement parentDiv = new TagsFinder().parentDiv(element);
+			WebElement parentDiv = new TagsFinder().parentDiv(cElement.getElement());
 			List<String> divStrList = new ArrayList<>();
 			if (parentDiv != null) {
 				String divStr = parentDiv.getText();
@@ -79,8 +77,8 @@ public class RadioButtonPatterns {
 					}
 				}
 				if (divStrList.size() > 0) {
-					String attributes = new SupportUtil().getAttributes(element).trim();
-					List<WebElement> siblingInputs = new TagsFinder().siblingInputs(element);
+					String attributes = cElement.getAttributes().trim();
+					List<WebElement> siblingInputs = new TagsFinder().siblingInputs(cElement.getElement());
 					for (int i = 0; i < siblingInputs.size(); i++) {
 						if (attributes.equalsIgnoreCase(new SupportUtil().getAttributes(siblingInputs.get(i)))) {
 							try {
@@ -101,7 +99,7 @@ public class RadioButtonPatterns {
 		System.out.println("Radio button not yet found");
 		if ((!isSiblingedInputAndLabels()) && (!isLabelParentingToInput()) && (!isDivParentingToInput())) {
 			System.out.println("Radio button going to find...");
-			List<WebElement> siblings = new TagsFinder().siblings(element);
+			List<WebElement> siblings = new TagsFinder().siblings(cElement.getElement());
 			System.out.println("Element siblings are : " + siblings.size());
 			if (siblings.size() > 1) {
 				return false;
@@ -115,7 +113,7 @@ public class RadioButtonPatterns {
 					System.out.println("grandParent also found amd tht s " + grandParent.getTagName());
 					List<WebElement> parentSiblings = new TagsFinder().childElements(grandParent);
 					System.out.println("Parent elements size is : " + parentSiblings.size());
-					String attributes = new SupportUtil().getAttributes(element);
+					String attributes = cElement.getAttributes();
 					for (int i = 0; i < parentSiblings.size(); i++) {
 						System.out.println(i + "Parent element tag is : " + parentSiblings.get(i).getTagName());
 						List<WebElement> child = new TagsFinder().childElements(parentSiblings.get(i));
@@ -168,7 +166,7 @@ public class RadioButtonPatterns {
 			rdo.setParentLabelText(parentLabelText);
 			rdo.setParentDivText(parentDivText);
 			rdo.setDivParentingToInputWithParentSiblingText(divParentingToInputWithParentSiblingText);
-			rdo.setElement(element);
+			rdo.setElement(cElement.getElement());
 			return rdo;
 		}
 		return null;

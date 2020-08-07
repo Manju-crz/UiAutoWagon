@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.interutil.SupportUtil;
 import mks.uiautowagon.interactor.interutil.TagsFinder;
 import mks.uiautowagon.interactor.patterns.objects.Button;
@@ -14,16 +15,14 @@ import mks.uiautowagon.interactor.patterns.objects.Checkbox;
 
 public class ButtonPatterns {
 	
-
-	private WebElement element = null;
+	CurrentElement cElement = null;
 	private String buttonText = null;
 	private String inputValueText = null;
 	private List<String> buttonInnerSpanTexts = new ArrayList<>();
 	private List<String> siblingSpanTexts = new ArrayList<>();
 	
-	public ButtonPatterns(WebElement element) {
-		System.out.println("Beginned to ButtonPatterns");
-		this.element = element;
+	public ButtonPatterns(CurrentElement cElement) {
+		this.cElement = cElement;
 	}
 	
 	enum HavingButtonTag {
@@ -38,11 +37,11 @@ public class ButtonPatterns {
 	
 	
 	private boolean isButton() {
-		String tagName = element.getTagName();
+		String tagName = cElement.getTagName();
 		if (tagName.equalsIgnoreCase("button")) {
-			buttonText = element.getText().trim();
+			buttonText = cElement.getElementText();
 			return true;
-		} else if (tagName.equalsIgnoreCase("input") && element.getAttribute("type").equalsIgnoreCase("submit")) {
+		} else if (tagName.equalsIgnoreCase("input") && cElement.getTypeAttribute().equalsIgnoreCase("submit")) {
 			return true;
 		}
 		return false;
@@ -50,12 +49,12 @@ public class ButtonPatterns {
 	
 
 	private boolean isButtonTagWithInnerTagsSpanText() {
-		siblingSpanTexts = new SupportUtil().getElementsText(new TagsFinder().siblingSpans(element));
+		siblingSpanTexts = new SupportUtil().getElementsText(new TagsFinder().siblingSpans(cElement.getElement()));
 		return siblingSpanTexts.isEmpty();
 	}
 	
 	private boolean isInputTagHavingValueTextWithTypeSubmit() {
-		inputValueText = element.getAttribute("value");
+		inputValueText = cElement.getElement().getAttribute("value");
 		if (inputValueText != null) {
 			return true;
 		}
@@ -63,7 +62,7 @@ public class ButtonPatterns {
 	}
 
 	private boolean isInputTypeSubmitWithSiblingTagSpanText() {
-		buttonInnerSpanTexts = new SupportUtil().getElementsText(new TagsFinder().innerSpanElements(element));
+		buttonInnerSpanTexts = new SupportUtil().getElementsText(new TagsFinder().innerSpanElements(cElement.getElement()));
 		return buttonInnerSpanTexts.isEmpty();
 	}
 	
@@ -78,7 +77,7 @@ public class ButtonPatterns {
 			btn.setInputValueText(inputValueText);
 			btn.setButtonInnerSpanTexts(buttonInnerSpanTexts);
 			btn.setSiblingSpanTexts(siblingSpanTexts);
-			btn.setElement(element);
+			btn.setcElement(cElement);
 			return btn;
 		}
 		return null;

@@ -5,29 +5,31 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
+
 public class Button {
 
-	private WebElement element = null;
 	private String buttonText = null;
 	private List<String> buttonInnerSpanTexts = new ArrayList<>();
 	private String inputValueText = null;
 	private List<String> siblingSpanTexts = new ArrayList<>();
 
+	private CurrentElement cElement = null;
 	
+	public CurrentElement getcElement() {
+		return cElement;
+	}
+
+	public void setcElement(CurrentElement cElement) {
+		this.cElement = cElement;
+	}
+
 	public String getButtonText() {
 		return buttonText;
 	}
 
 	public void setButtonText(String buttonText) {
 		this.buttonText = buttonText;
-	}
-
-	public WebElement getElement() {
-		return element;
-	}
-
-	public void setElement(WebElement element) {
-		this.element = element;
 	}
 
 	public String getInputValueText() {
@@ -57,13 +59,13 @@ public class Button {
 	public WebElement compare(String elementText) {
 
 		if ((buttonText != null) && buttonText.trim().equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		else if (buttonInnerSpanTexts.contains(elementText))
-			return element;
+			return cElement.getElement();
 		else if ((inputValueText != null) && inputValueText.trim().equalsIgnoreCase(elementText))
-			return element;
+			return cElement.getElement();
 		else if (siblingSpanTexts.contains(elementText))
-			return element;
+			return cElement.getElement();
 		return null;
 	}
 	
@@ -81,8 +83,8 @@ public class Button {
 		if (!siblingSpanTexts.isEmpty()) {
 			str.append("Sibling SpanTexts" + siblingSpanTexts + ";");
 		}
-		if (element != null) {
-			//str.append("ElementTag : " + element.getTagName());
+		if (cElement.getElement() != null) {
+			str.append("ElementTag : " + cElement.getTagName());
 		}
 		return str.toString();
 	}
