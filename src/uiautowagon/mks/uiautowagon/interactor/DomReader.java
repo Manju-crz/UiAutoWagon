@@ -82,7 +82,7 @@ public class DomReader {
 
 			if ((allAttributes != null) && allAttributes.contains("=")) {
 
-				Frames frame = new FramePatterns(element).findPattern();
+				Frames frame = new FramePatterns(cElement).findPattern();
 				if (frame != null) {
 					System.out.println("Found iframe and storing it..");
 					fs.add(frame);

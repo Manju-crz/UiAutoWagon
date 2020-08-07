@@ -2,9 +2,20 @@ package mks.uiautowagon.interactor.patterns.objects;
 
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
+
 public class Frames {
 
 	private String attributeStr = null;
+	private CurrentElement cElement = null;
+	
+	public CurrentElement getcElement() {
+		return cElement;
+	}
+
+	public void setcElement(CurrentElement cElement) {
+		this.cElement = cElement;
+	}
 
 	public String getAttributeStr() {
 		return attributeStr;
@@ -12,16 +23,6 @@ public class Frames {
 
 	public void setAttributeStr(String attributeStr) {
 		this.attributeStr = attributeStr;
-	}
-
-	private WebElement element = null;
-
-	public WebElement getElement() {
-		return element;
-	}
-
-	public void setElement(WebElement frame) {
-		this.element = frame;
 	}
 
 	public WebElement compare(String elementText) {
