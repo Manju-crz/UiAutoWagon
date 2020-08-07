@@ -1,5 +1,6 @@
 package mks.base.driver;
 
+import mks.java.util.Sleep;
 import mks.uiautowagon.interactor.WagonerFacade;
 
 public class CsvTestPerformer {
@@ -62,9 +63,13 @@ public class CsvTestPerformer {
 		if (!foundException) {
 			try {
 				if (isButton()) {
-					wagoner.button.get(elementLabel).click();
+					//wagoner.button.get(elementLabel).click();
+					wagoner.clickElement.get(elementLabel).click();
+					Sleep.for2Seconds();
 				} else if (isLink()) {
-					wagoner.link.get(elementLabel).click();
+					//wagoner.link.get(elementLabel).click();
+					wagoner.clickElement.get(elementLabel).click();
+					Sleep.for2Seconds();
 				} else if (isCheckbox()) {
 					wagoner.checkBox.get(elementLabel).click();
 				} else if (isRadio()) {
@@ -75,13 +80,14 @@ public class CsvTestPerformer {
 				}
 			} catch (NullPointerException e) {
 				foundException = true;
-				exceptionMessage = "Found NullPointerException while performing action on element, and the exception is: "
-						+ e.getMessage();
+				exceptionMessage = String.format(
+						"NullPointerException: Element Type- %s; Element Label- %s; Message- %s", elementType,
+						elementLabel, e.getMessage());
 				e.printStackTrace();
 			} catch (Exception e) {
 				foundException = true;
-				exceptionMessage = "Found Exception while performing action on element, and the exception is: "
-						+ e.getMessage();
+				exceptionMessage = String.format("Exception: Element Type- %s; Element Label- %s; Message- %s",
+						elementType, elementLabel, e.getMessage());
 				e.printStackTrace();
 			}
 		}
