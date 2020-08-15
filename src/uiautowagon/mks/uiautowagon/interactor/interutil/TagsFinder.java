@@ -126,6 +126,18 @@ public class TagsFinder {
 		return element.findElements(By.xpath("./td"));
 	}
 
+	public List<WebElement> childLabels(WebElement element) {
+		return element.findElements(By.xpath("./label"));
+	}
+
+	public List<WebElement> childDivs(WebElement element) {
+		return element.findElements(By.xpath("./div"));
+	}
+	
+	public List<WebElement> childYtFormatedStrings(WebElement element) {
+		return element.findElements(By.xpath("./yt-formatted-string"));
+	}
+
 	public List<WebElement> innerInputs_ChildToTD(WebElement element) {
 		return element.findElements(By.xpath(".//td/input"));
 	}

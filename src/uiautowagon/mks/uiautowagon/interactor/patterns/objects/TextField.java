@@ -15,6 +15,8 @@ public class TextField {
 	private String divNeighbourPlaceholder = null;
 	private String ariaLabel = null;
 	
+	private String parentDivsSiblingLabel = null;
+	private String parentDivsSiblingInnerLabel = null;
 	
 	private CurrentElement cElement = null;
 	
@@ -66,6 +68,23 @@ public class TextField {
 		this.ariaLabel = ariaLabel;
 	}
 
+	public String getParentDivsSiblingLabel() {
+		return parentDivsSiblingLabel;
+	}
+
+	public void setParentDivsSiblingLabel(String parentDivsSiblingLabel) {
+		this.parentDivsSiblingLabel = parentDivsSiblingLabel;
+	}
+	
+	public String getParentDivsSiblingInnerLabel() {
+		return parentDivsSiblingInnerLabel;
+	}
+
+	public void setParentDivsSiblingInnerLabel(String parentDivsSiblingInnerLabel) {
+		this.parentDivsSiblingInnerLabel = parentDivsSiblingInnerLabel;
+	}
+
+	
 	public CurrentElement getcElement() {
 		return cElement;
 	}
@@ -87,6 +106,10 @@ public class TextField {
 		else if ((divNeighbourPlaceholder != null) && divNeighbourPlaceholder.trim().equalsIgnoreCase(elementText))
 			return cElement.getElement();
 		else if ((ariaLabel != null) && ariaLabel.trim().equalsIgnoreCase(elementText))
+			return cElement.getElement();
+		else if ((parentDivsSiblingLabel != null) && parentDivsSiblingLabel.trim().equalsIgnoreCase(elementText))
+			return cElement.getElement();
+		else if ((parentDivsSiblingInnerLabel != null) && parentDivsSiblingInnerLabel.trim().equalsIgnoreCase(elementText))
 			return cElement.getElement();
 		return null;
 	}

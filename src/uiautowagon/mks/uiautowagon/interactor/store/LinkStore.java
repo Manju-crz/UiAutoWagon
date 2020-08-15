@@ -27,5 +27,4 @@ public class LinkStore {
 		}
 		return null;
 	}
-	
 }

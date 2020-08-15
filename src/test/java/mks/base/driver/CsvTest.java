@@ -65,6 +65,11 @@ public class CsvTest extends DriverBase {
 					writer.closeFileWriter();
 					break;
 				} else {
+
+					System.out.println("working with cellValue : " + cellValue);
+					if (cellValue.contains("COMMA")) {
+						cellValue = cellValue.replace("COMMA", ",");
+					}
 					CsvTestPerformer performer = new CsvTestPerformer(wagoner, cellValue.split("=")[0].trim(),
 							cellValue.split("=")[1].trim());
 					performer.performAction();
@@ -76,6 +81,10 @@ public class CsvTest extends DriverBase {
 						rowPassed = false;
 						break;
 					}
+					
+					if(performer.isButton() || performer.isLink())
+						wagoner.reload();
+					
 				}
 			}
 			

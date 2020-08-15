@@ -16,6 +16,25 @@ public class Checkbox {
 	private String parentLabelText = null;
 	private String grandParentLabelText = null;
 
+	private WebElement siblingLabel = null;
+	public WebElement getSiblingLabel() {
+		return siblingLabel;
+	}
+
+	public void setSiblingLabel(WebElement siblingLabel) {
+		this.siblingLabel = siblingLabel;
+	}
+
+	public WebElement getParentLabel() {
+		return parentLabel;
+	}
+
+	public void setParentLabel(WebElement parentLabel) {
+		this.parentLabel = parentLabel;
+	}
+
+	private WebElement parentLabel = null;
+
 	private CurrentElement cElement = null;
 	
 	public CurrentElement getcElement() {
@@ -69,11 +88,11 @@ public class Checkbox {
 	public WebElement compare(String elementText) {
 
 		if ((checkBoxLabel != null) && checkBoxLabel.equalsIgnoreCase(elementText))
-			return cElement.getElement();
+			return siblingLabel;
 		else if (spanTexts.contains(elementText))
 			return cElement.getElement();
 		else if ((parentLabelText != null) && parentLabelText.equalsIgnoreCase(elementText))
-			return cElement.getElement();
+			return parentLabel;
 		else if ((grandParentLabelText != null) && grandParentLabelText.equalsIgnoreCase(elementText))
 			return cElement.getElement();
 		return null;

@@ -17,7 +17,7 @@ import mks.uiautowagon.interactor.patterns.objects.TextField;
 public class LinkPatterns {
 	
 	private String linkText = null;
-
+	private String linkChildDivText = null;
 	CurrentElement cElement = null;
 	
 	
@@ -26,7 +26,8 @@ public class LinkPatterns {
 	}
 
 	enum WithinAnchorTag {
-		AnchorTagWithText;
+		AnchorTagWithText,
+		AnchorTagChildDivText;
 	}
 
 	private boolean isLink() {
@@ -45,16 +46,46 @@ public class LinkPatterns {
 		String linkTxt = cElement.getElementText();
 		if (linkTxt != null) {
 			linkText = linkTxt.trim();
-			return true;
+			if (linkTxt.length() > 0)
+				return true;
 		}
 		return false;
 	}
 
+	private boolean isLinkTextValid() {
+		if (linkText != null) {
+			System.out.println("linkText idenfitued is : " + linkText);
+			if (linkText.trim().length() > 0)
+				return true;
+		}
+		return false;
+	}
+
+	private boolean isLinkChildDivTextFound() {
+		System.out.println("isLinkChildDivTextFound beginened");
+		if (!isLinkTextValid()) {
+			System.out.println("isLinkTextFound is not");
+			List<WebElement> childDiv = new TagsFinder().childDivs(cElement.getElement());
+			System.out.println("childDiv size is : " + childDiv);
+			for (WebElement div : childDiv) {
+				linkChildDivText = div.getText();
+				System.out.println("linkChildDivText is : " + linkChildDivText);
+				if ((linkChildDivText != null) && linkChildDivText.trim().length() > 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	
 	public Link findPattern() {
 		if (isLink()) {
 			Link lnk = new Link();
 			isLinkTextFound();
+			isLinkChildDivTextFound();
 			lnk.setLinkText(linkText);
+			lnk.setLinkChildDivText(linkChildDivText);
 			lnk.setcElement(cElement);
 			return lnk;
 		}

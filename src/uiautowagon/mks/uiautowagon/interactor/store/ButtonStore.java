@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.patterns.objects.Button;
 import mks.uiautowagon.interactor.patterns.objects.TextField;
 
@@ -22,9 +23,9 @@ public class ButtonStore {
 		Button tf = new Button();
 		for (int i = 0; i < buttonList.size(); i++) {
 			tf = buttonList.get(i);
-			WebElement foundElement = tf.compare(elementText);
+			CurrentElement foundElement = tf.compare(elementText);
 			if (foundElement != null) {
-				return foundElement;
+				return foundElement.getElement();
 			}
 		}
 		return null;

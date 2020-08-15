@@ -18,7 +18,6 @@ public class LinkComponent implements WagonerElements {
 	}
 	@Override
 	public WebElement get(String label) {
-		
 
 		WebElement element = new LinkStore().find(label);
 		if (element == null) {

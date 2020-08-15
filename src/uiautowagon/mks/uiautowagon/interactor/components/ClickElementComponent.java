@@ -8,6 +8,7 @@ import java.util.Set;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.MyDriver;
 import mks.uiautowagon.interactor.WagonerElements;
 import mks.uiautowagon.interactor.WagonerFacade;
@@ -61,17 +62,13 @@ public class ClickElementComponent implements WagonerElements {
 		for (HashMap<String, Object> map : elementsMappedList) {
 			String key = "";
 			for (String k : map.keySet()) {
-				System.out.println("key -- " + key);
 				key = key + k;
-			}
-			for (String k : map.keySet()) {
-				System.out.println("The key is: " + k + ", value is :" + map.get(k));
 			}
 			if (key.toLowerCase().contains("button")) {
 				Button btn = (Button) map.get(key);
-				WebElement element = btn.compare(label);
+				CurrentElement element = btn.compare(label);
 				if (element != null) {
-					return element;
+					return element.getElement();
 				}
 
 			} else if (key.toLowerCase().contains("link")) {

@@ -14,6 +14,10 @@ public class Button {
 	private String inputValueText = null;
 	private List<String> siblingSpanTexts = new ArrayList<>();
 
+	private String paperButtonTxt = null;
+	private String paperButtonArialLabel = null;
+	private String paperButtonInnerYtFormattedString = null;
+	
 	private CurrentElement cElement = null;
 	
 	public CurrentElement getcElement() {
@@ -55,17 +59,51 @@ public class Button {
 	public void setSiblingSpanTexts(List<String> siblingSpanTexts) {
 		this.siblingSpanTexts = siblingSpanTexts;
 	}
+	public String getPaperButtonTxt() {
+		return paperButtonTxt;
+	}
 
-	public WebElement compare(String elementText) {
+	public void setPaperButtonTxt(String paperButtonTxt) {
+		this.paperButtonTxt = paperButtonTxt;
+	}
 
-		if ((buttonText != null) && buttonText.trim().equalsIgnoreCase(elementText))
-			return cElement.getElement();
-		else if (buttonInnerSpanTexts.contains(elementText))
-			return cElement.getElement();
-		else if ((inputValueText != null) && inputValueText.trim().equalsIgnoreCase(elementText))
-			return cElement.getElement();
-		else if (siblingSpanTexts.contains(elementText))
-			return cElement.getElement();
+	public String getPaperButtonArialLabel() {
+		return paperButtonArialLabel;
+	}
+
+	public void setPaperButtonArialLabel(String paperButtonArialLabel) {
+		this.paperButtonArialLabel = paperButtonArialLabel;
+	}
+
+	public String getPaperButtonInnerYtFormattedString() {
+		return paperButtonInnerYtFormattedString;
+	}
+
+	public void setPaperButtonInnerYtFormattedString(String paperButtonInnerYtFormattedString) {
+		this.paperButtonInnerYtFormattedString = paperButtonInnerYtFormattedString;
+	}
+	
+	public CurrentElement compare(String elementText) {
+
+		if (cElement.getTagName().equalsIgnoreCase("paper-button")) {
+			if ((paperButtonTxt != null) && paperButtonTxt.trim().equalsIgnoreCase(elementText))
+				return cElement;
+			else if ((paperButtonInnerYtFormattedString != null)
+					&& paperButtonInnerYtFormattedString.trim().equalsIgnoreCase(elementText))
+				return cElement;
+			else if ((paperButtonArialLabel != null) && paperButtonArialLabel.trim().equalsIgnoreCase(elementText))
+				return cElement;
+		} else {
+			if ((buttonText != null) && buttonText.trim().equalsIgnoreCase(elementText))
+				return cElement;
+			else if (buttonInnerSpanTexts.contains(elementText))
+				return cElement;
+			else if ((inputValueText != null) && inputValueText.trim().equalsIgnoreCase(elementText))
+				return cElement;
+			else if (siblingSpanTexts.contains(elementText))
+				return cElement;
+		}
+
 		return null;
 	}
 	

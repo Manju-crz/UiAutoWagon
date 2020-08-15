@@ -1,5 +1,7 @@
 package mks.base.driver;
 
+import org.openqa.selenium.StaleElementReferenceException;
+
 import mks.java.util.Sleep;
 import mks.uiautowagon.interactor.WagonerFacade;
 
@@ -21,23 +23,23 @@ public class CsvTestPerformer {
 		validateElementType();
 	}
 
-	private boolean isButton() {
+	public boolean isButton() {
 		return elementType.equalsIgnoreCase("Button");
 	}
 
-	private boolean isLink() {
+	public boolean isLink() {
 		return elementType.equalsIgnoreCase("link");
 	}
 
-	private boolean isCheckbox() {
+	public boolean isCheckbox() {
 		return elementType.equalsIgnoreCase("Checkbox");
 	}
 
-	private boolean isRadio() {
+	public boolean isRadio() {
 		return elementType.equalsIgnoreCase("Radio");
 	}
 
-	private boolean isTextfield() {
+	public boolean isTextfield() {
 		return elementType.equalsIgnoreCase("Textfield");
 	}
 
@@ -62,21 +64,11 @@ public class CsvTestPerformer {
 
 		if (!foundException) {
 			try {
-				if (isButton()) {
-					//wagoner.button.get(elementLabel).click();
-					wagoner.clickElement.get(elementLabel).click();
-					Sleep.for2Seconds();
-				} else if (isLink()) {
-					//wagoner.link.get(elementLabel).click();
-					wagoner.clickElement.get(elementLabel).click();
-					Sleep.for2Seconds();
-				} else if (isCheckbox()) {
-					wagoner.checkBox.get(elementLabel).click();
-				} else if (isRadio()) {
-					wagoner.radioButton.get(elementLabel).click();
-				} else if (isTextfield()) {
-					setTextStr();
-					wagoner.textField.get(elementLabel).sendKeys(setTextStr);
+				try {
+					perform();
+				} catch (StaleElementReferenceException e) {
+					wagoner.reload();
+					perform();
 				}
 			} catch (NullPointerException e) {
 				foundException = true;
@@ -92,7 +84,22 @@ public class CsvTestPerformer {
 			}
 		}
 	}
-	
-	
+
+	private void perform() {
+		if (isButton()) {
+			wagoner.button.get(elementLabel).click();
+			Sleep.for2Seconds();
+		} else if (isLink()) {
+			wagoner.link.get(elementLabel).click();
+			Sleep.for2Seconds();
+		} else if (isCheckbox()) {
+			wagoner.checkBox.get(elementLabel).click();
+		} else if (isRadio()) {
+			wagoner.radioButton.get(elementLabel).click();
+		} else if (isTextfield()) {
+			setTextStr();
+			wagoner.textField.get(elementLabel).sendKeys(setTextStr);
+		}
+	}
 	
 }

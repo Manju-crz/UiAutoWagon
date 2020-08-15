@@ -44,7 +44,7 @@ public class DomReader {
 	
 	void distribute() {
 
-		List<WebElement> allElements = driver.findElements(By.xpath("//body//input|//body//a|//body//button")); //[not(contains(@style,'display:none'))]		//body//*
+		List<WebElement> allElements = driver.findElements(By.xpath("//body//input|//body//a|//body//button|//body//paper-button")); //[not(contains(@style,'display:none'))]		//body//*
 		System.out.println("inputElements size is : " + allElements.size());
 		ElementsStore elementsStore = new ElementsStore();
 		ClickElementsStore clickElementsStore = new ClickElementsStore();
@@ -109,11 +109,6 @@ public class DomReader {
 				Button buttonElement = buttonPatterns.findPattern();
 				if (buttonElement != null) {
 					elementsStore.add("Button" + buttonCount, buttonElement);
-					System.out.println("Adding clickElementsStore button : " + "Button" + buttonCount);
-					System.out.println(">>> " + buttonElement.getButtonText());
-					System.out.println(">>> " + buttonElement.getButtonInnerSpanTexts());
-					System.out.println(">>> " + buttonElement.getInputValueText());
-					System.out.println(">>> " + buttonElement.getSiblingSpanTexts());
 					clickElementsStore.add("Button" + buttonCount, buttonElement);
 					bs.add(buttonElement);
 					buttonCount++;

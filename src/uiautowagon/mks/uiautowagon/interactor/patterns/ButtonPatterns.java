@@ -21,6 +21,11 @@ public class ButtonPatterns {
 	private List<String> buttonInnerSpanTexts = new ArrayList<>();
 	private List<String> siblingSpanTexts = new ArrayList<>();
 	
+	private String paperButtonTxt = null;
+	private String paperButtonArialLabel = null;
+	private String paperButtonInnerYtFormattedString = null;
+	
+	
 	public ButtonPatterns(CurrentElement cElement) {
 		this.cElement = cElement;
 	}
@@ -33,6 +38,11 @@ public class ButtonPatterns {
 	enum WithInputTag {
 		InputTagHavingValueTextWithTypeSubmit,
 		InputTypeSubmitWithSiblingTagSpanText;
+	}
+
+	enum PaperButton {
+		PaperButtonHavingTextOrArialLabel,
+		PaperButtonHavingInnerYtFormattedString;
 	}
 	
 	
@@ -47,6 +57,10 @@ public class ButtonPatterns {
 		return false;
 	}
 	
+	private boolean isPaperButton() {
+		String tagName = cElement.getTagName();
+		return tagName.equalsIgnoreCase("paper-button");
+	}
 
 	private boolean isButtonTagWithInnerTagsSpanText() {
 		siblingSpanTexts = new SupportUtil().getElementsText(new TagsFinder().siblingSpans(cElement.getElement()));
@@ -66,6 +80,25 @@ public class ButtonPatterns {
 		return buttonInnerSpanTexts.isEmpty();
 	}
 	
+	private boolean isPaperButtonHavingTextOrArialLabel() {
+		paperButtonTxt = cElement.getElementText();
+		paperButtonArialLabel = cElement.getElement().getAttribute("aria-label");
+		if ((paperButtonTxt != null) || (paperButtonArialLabel != null))
+			return true;
+		return false;
+	}
+
+	private boolean isPaperButtonInnerYtFormattedString() {
+		List<WebElement> ytFormatedStringElements = new TagsFinder().childYtFormatedStrings(cElement.getElement());
+		for (WebElement element : ytFormatedStringElements) {
+			paperButtonInnerYtFormattedString = element.getText();
+			if ((paperButtonInnerYtFormattedString != null)
+					&& (paperButtonInnerYtFormattedString.trim().length() > 0)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public Button findPattern() {
 		if (isButton()) {
@@ -77,6 +110,15 @@ public class ButtonPatterns {
 			btn.setInputValueText(inputValueText);
 			btn.setButtonInnerSpanTexts(buttonInnerSpanTexts);
 			btn.setSiblingSpanTexts(siblingSpanTexts);
+			btn.setcElement(cElement);
+			return btn;
+		} else if (isPaperButton()) {
+			Button btn = new Button();
+			isPaperButtonHavingTextOrArialLabel();
+			isPaperButtonInnerYtFormattedString();
+			btn.setPaperButtonTxt(paperButtonTxt);
+			btn.setPaperButtonArialLabel(paperButtonArialLabel);
+			btn.setPaperButtonInnerYtFormattedString(paperButtonInnerYtFormattedString);
 			btn.setcElement(cElement);
 			return btn;
 		}

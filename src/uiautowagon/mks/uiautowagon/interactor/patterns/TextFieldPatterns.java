@@ -11,6 +11,7 @@ import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.interutil.SupportUtil;
 import mks.uiautowagon.interactor.interutil.TagsFinder;
 import mks.uiautowagon.interactor.patterns.objects.TextField;
+import mks.uiautowagon.interactor.store.TextFieldsStore;
 
 public class TextFieldPatterns {
 	
@@ -21,9 +22,12 @@ public class TextFieldPatterns {
 	private String divNeighbourPlaceholder = null;
 	private String ariaLabel = null;
 	
+	private String parentDivsSiblingLabel = null;
+	private String parentDivsSiblingInnerLabel = null;
+	
 	CurrentElement cElement = null;
 	
-	private List<String> acceptedAttributeTypes = new ArrayList<>(Arrays.asList("password", "text", "email"));
+	private List<String> acceptedAttributeTypes = new ArrayList<>(Arrays.asList("password", "text", "email", "tel"));
 	
 	public TextFieldPatterns(CurrentElement cElement) {
 		this.cElement = cElement;
@@ -38,13 +42,14 @@ public class TextFieldPatterns {
 	
 	
 	enum OusideParentTag {
-		FirstTrHavingLabelsSecondTrHavingInput;
+		FirstTrHavingLabelsSecondTrHavingInput,
+		DivParentsSiblingLabelUnderGrandParentDiv,
+		DivParentsSiblingChildLabelUnderGrandParentDiv;
 	}
 	
 
 	private boolean isTextField() {
 		String attributeType = cElement.getElement().getAttribute("type");
-		System.out.println("attributeType is : " + attributeType);
 		if ((attributeType != null) && (acceptedAttributeTypes.contains(attributeType)))
 			return true;
 		return false;
@@ -160,13 +165,53 @@ public class TextFieldPatterns {
 	}
 	
 	private boolean isInputTagHavingAriaLabelholder() {
-		if ((label == null) && (placeholder == null)) {
-			ariaLabel = cElement.getElement().getAttribute("aria-label").trim();
+		System.out.println("isInputTagHavingAriaLabelholder label : " + label);
+		System.out.println("isInputTagHavingAriaLabelholder placeholder : " + placeholder);
+		if ((label == null) && (!isPlaceholderFound())) {
+			ariaLabel = cElement.getElement().getAttribute("aria-label");
+			System.out.println("ariaLabel is :: " + ariaLabel);
 			return true;
 		}
 		return false;
 	}
+
+	private boolean isDivParentsSiblingLabelUnderGrandParentDiv() {
+		if ((label == null) && (trParallelLabel == null) && (ariaLabel == null)) {
+			WebElement parentDiv = new TagsFinder().parentDiv(cElement.getElement());
+			if (parentDiv != null) {
+				WebElement parentSiblingLabel = new TagsFinder().siblingLabel(parentDiv);
+				if (parentSiblingLabel != null) {
+					parentDivsSiblingLabel = parentSiblingLabel.getText();
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
+
+	private boolean isDivParentsSiblingChildLabelUnderGrandParentDiv() {
+		if (parentDivsSiblingLabel == null) {
+			System.out.println("TextFieldsStore.textFieldsList.size() : " + TextFieldsStore.textFieldsList.size());
+			WebElement parentDiv = new TagsFinder().parentDiv(cElement.getElement());
+			if (parentDiv != null) {
+				List<WebElement> parentSiblingDivs = new TagsFinder().siblingDivs(parentDiv);
+				System.out.println("parentSiblingDivs are : " + parentSiblingDivs.size());
+				for (WebElement divElement : parentSiblingDivs) {
+					List<WebElement> childLabels = new TagsFinder().childLabels(divElement);
+					System.out.println("childLabels size : " + childLabels.size());
+					for (WebElement label : childLabels) {
+						parentDivsSiblingInnerLabel = label.getText();
+						System.out.println("parentDivsSiblingInnerLabel is : " + parentDivsSiblingInnerLabel);
+						if (parentDivsSiblingInnerLabel != null && parentDivsSiblingInnerLabel.trim().length() > 0) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 	
 	public TextField findPattern() {
 		if (isTextField()) {
@@ -176,6 +221,8 @@ public class TextFieldPatterns {
 			isFirstTrHavingLabelsSecondTrHavingInput();
 			isInputTagWithSiblingedDivPlaceholder();
 			isInputTagHavingAriaLabelholder();
+			isDivParentsSiblingLabelUnderGrandParentDiv();
+			isDivParentsSiblingChildLabelUnderGrandParentDiv();
 			
 			tf.setPlaceholder(placeholder);
 			tf.setLabelText(label);
@@ -183,7 +230,8 @@ public class TextFieldPatterns {
 			System.out.println("divNeighbourPlaceholder finally fnd is : " + divNeighbourPlaceholder);
 			tf.setDivNeighbourPlaceholder(divNeighbourPlaceholder);
 			tf.setAriaLabel(ariaLabel);
-			//tf.setElement(element);
+			tf.setParentDivsSiblingLabel(parentDivsSiblingLabel);
+			tf.setParentDivsSiblingInnerLabel(parentDivsSiblingInnerLabel);
 			tf.setcElement(cElement);
 			return tf;
 		}

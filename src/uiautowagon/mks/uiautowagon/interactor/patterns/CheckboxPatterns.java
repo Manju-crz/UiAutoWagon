@@ -20,6 +20,9 @@ public class CheckboxPatterns {
 
 	private String parentLabelText = null;
 	private String grandParentLabelText = null;
+	
+	WebElement siblingLabel = null;
+	WebElement parentLabel = null;
 
 	CurrentElement cElement = null;
 	
@@ -51,7 +54,7 @@ public class CheckboxPatterns {
 	}
 	
 	private boolean isInputTagWithSiblingedLabel() {
-		WebElement siblingLabel = new TagsFinder().siblingLabel(cElement.getElement());
+		siblingLabel = new TagsFinder().siblingLabel(cElement.getElement());
 		if (siblingLabel == null)
 			return false;
 		label = siblingLabel.getText();
@@ -72,9 +75,9 @@ public class CheckboxPatterns {
 	}
 
 	private boolean isInputTagwithParentLabel() {
-		WebElement parentElement = new TagsFinder().parentElement(cElement.getElement());
-		if (parentElement.getTagName().equalsIgnoreCase("label")) {
-			parentLabelText = parentElement.getText().trim();
+		parentLabel = new TagsFinder().parentElement(cElement.getElement());
+		if (parentLabel.getTagName().equalsIgnoreCase("label")) {
+			parentLabelText = parentLabel.getText().trim();
 			return true;
 		}
 		return false;
@@ -104,6 +107,8 @@ public class CheckboxPatterns {
 			chk.setGrandParentLabelText(grandParentLabelText);
 			chk.setParentElementAnchor(isAnchorParent);
 			chk.setcElement(cElement);
+			chk.setSiblingLabel(siblingLabel);
+			chk.setParentLabel(parentLabel);
 			return chk;
 		}
 		return null;

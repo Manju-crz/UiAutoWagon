@@ -1,5 +1,9 @@
 package mks.uiautowagon.interactor.patterns.objects;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.openqa.selenium.WebElement;
 
 import mks.uiautowagon.interactor.CurrentElement;
@@ -7,6 +11,7 @@ import mks.uiautowagon.interactor.CurrentElement;
 public class Link {
 
 	private String linkText = null;
+	private String linkChildDivText = null;
 	
 	private CurrentElement cElement = null;
 	
@@ -23,18 +28,34 @@ public class Link {
 		this.linkText = linkText;
 	}
 	
+	public String getLinkChildDivText() {
+		return linkChildDivText;
+	}
+	public void setLinkChildDivText(String linkChildDivText) {
+		this.linkChildDivText = linkChildDivText;
+	}
+
 
 	public WebElement compare(String elementText) {
-
 		if ((linkText != null) && linkText.trim().equalsIgnoreCase(elementText))
 			return cElement.getElement();
+		else if ((linkText != null) && linkText.trim().length() > 0) {
+			if (new ArrayList<>(Arrays.asList(linkText.split("\n"))).contains(elementText))
+				return cElement.getElement();
+		}
+		if ((linkChildDivText != null) && linkChildDivText.trim().equalsIgnoreCase(elementText))
+			return cElement.getElement();
+		else if ((linkChildDivText != null) && linkChildDivText.trim().length() > 0) {
+			if (new ArrayList<>(Arrays.asList(linkChildDivText.split("\n"))).contains(elementText))
+				return cElement.getElement();
+		}
 		return null;
 	}
 	
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		if (linkText != null) {
-			str.append("Link Text : " + linkText);
+			str.append("Link Text : " + linkText + ";");
 		}
 		if (cElement.getElement() != null) {
 			str.append("Element tag : " + cElement.getTagName());

@@ -9,7 +9,9 @@ import mks.uiautowagon.interactor.components.LinkComponent;
 import mks.uiautowagon.interactor.components.RadioButtonComponent;
 import mks.uiautowagon.interactor.components.TextFieldComponent;
 import mks.uiautowagon.interactor.patterns.TextFieldPatterns;
+import mks.uiautowagon.interactor.patterns.objects.Link;
 import mks.uiautowagon.interactor.patterns.objects.RadioButton;
+import mks.uiautowagon.interactor.patterns.objects.TextField;
 import mks.uiautowagon.interactor.store.ButtonStore;
 import mks.uiautowagon.interactor.store.CheckboxStore;
 import mks.uiautowagon.interactor.store.ClickElementsStore;
@@ -51,6 +53,7 @@ public class WagonerFacade extends MyDriver{
 		CheckboxStore.checkboxList.clear();
 		LinkStore.linkList.clear();
 		RadioButtonStore.rdoList.clear();
+		ClickElementsStore.clickElements.clear();
 	}
 	
 	
@@ -71,17 +74,19 @@ public class WagonerFacade extends MyDriver{
 		ButtonStore btnStore = new ButtonStore();
 		System.out.println("btnStore.buttonList.size() is : " + btnStore.buttonList.size());
 		
-		LinkStore lnkStore = new LinkStore();
-		System.out.println("lnkStore.linkList.size() is : " + lnkStore.linkList.size());
-		
+		System.out.println("lnkStore.linkList.size() is : " + LinkStore.linkList.size());
+		for (Link radioButton : LinkStore.linkList) {
+			System.out.println("TextFieldsStore.textFieldsList : " + radioButton.toString());
+		}
 		RadioButtonStore radioButtons = new RadioButtonStore();
 		System.out.println("radioButtons.rdoList.size() is : " + radioButtons.rdoList.size());
-		for(RadioButton radioButton: radioButtons.rdoList) {
-			System.out.println("radioButtons.rdoList : " + radioButton.toString());
+
+		System.out.println("TextFieldsStore.textFieldsList.size() is : " + TextFieldsStore.textFieldsList.size());
+		for (TextField radioButton : TextFieldsStore.textFieldsList) {
+			System.out.println("TextFieldsStore.textFieldsList : " + radioButton.toString());
 		}
 		System.out.println("Clickeleent store : " + ClickElementsStore.clickElements.size());
-		System.out.println("Clickeleent store : " + ClickElementsStore.clickElements);
-		
+
 	}
 
 }
