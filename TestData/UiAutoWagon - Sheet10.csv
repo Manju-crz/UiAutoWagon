@@ -1,4 +1,8 @@
 URL,Step1,Step2,Step3,Step4,Step5,Step6,Step7,Step8,Step9
-https://www.netflix.com/in/,Button=Sign In,Textfield=Email or phone number,Textfield=Password,Checkbox=Remember Me,Button=Sign In,,,,
-https://www.facebook.com/,,,Radio=Female,,,,,,
-https://www.flipkart.com/,Textfield=Enter EMail/Mobile Number,Textfield=Enter Password,Button=Login,Link=New to Flipkart? Create an account,Textfield=Enter Mobile Number,Button=CONTINUE,,,
+https://in.yahoo.com/,Link = Sign in,Textfield = UsernameCOMMA email address or mobile number,Checkbox = Stay signed in,Button = Next,,,
+https://www.amazon.in/,Link = HelloCOMMA Sign in,Textfield = Email or mobile phone number,Button = Continue,Link = Create your Amazon account,Textfield = Mobile number,Textfield = Email (optional),Textfield = Password,Link = Sign in
+https://app-sjqe.marketo.com/,Textfield = Email,Textfield = Password,Button = Login,Checkbox = Remember Email,Link = Forgot Password?,,,,,
+https://www.ebay.com/,Link = Sign in,Radio = Click to verify,,,,,,
+https://ticker.finology.in/,Link =  Account,TextField = Enter your Mobile Number to Get Started:,Button  =  Next,TextField = Your Full Name: *,TextField = Email ID: *,TextField = Mobile Number: *,Button = Signup & Get Started,,,
+https://www.linkedin.com/,Link = Sign in,Textfield= Email or Phone,Textfield= Password,Button = Sign in,Link = Forgot password?,Link = Join now,
+https://stackoverflow.com/,Link = Log in,Textfield = Email ,Textfield= Password,Button = Log in,Link = Forgot password?,Link = Sign up,
