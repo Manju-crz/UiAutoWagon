@@ -15,6 +15,7 @@ import mks.uiautowagon.interactor.patterns.FramePatterns;
 import mks.uiautowagon.interactor.patterns.LinkPatterns;
 import mks.uiautowagon.interactor.patterns.OtherPatterns;
 import mks.uiautowagon.interactor.patterns.RadioButtonPatterns;
+import mks.uiautowagon.interactor.patterns.TextAreaPatterns;
 import mks.uiautowagon.interactor.patterns.TextFieldPatterns;
 import mks.uiautowagon.interactor.patterns.objects.Button;
 import mks.uiautowagon.interactor.patterns.objects.Checkbox;
@@ -22,6 +23,7 @@ import mks.uiautowagon.interactor.patterns.objects.Frames;
 import mks.uiautowagon.interactor.patterns.objects.Link;
 import mks.uiautowagon.interactor.patterns.objects.Other;
 import mks.uiautowagon.interactor.patterns.objects.RadioButton;
+import mks.uiautowagon.interactor.patterns.objects.TextArea;
 import mks.uiautowagon.interactor.patterns.objects.TextField;
 import mks.uiautowagon.interactor.store.ButtonStore;
 import mks.uiautowagon.interactor.store.CheckboxStore;
@@ -31,6 +33,7 @@ import mks.uiautowagon.interactor.store.FramesStore;
 import mks.uiautowagon.interactor.store.LinkStore;
 import mks.uiautowagon.interactor.store.OtherStore;
 import mks.uiautowagon.interactor.store.RadioButtonStore;
+import mks.uiautowagon.interactor.store.TextAreaStore;
 import mks.uiautowagon.interactor.store.TextFieldsStore;
 
 public class DomReader {
@@ -44,7 +47,7 @@ public class DomReader {
 	
 	void distribute() {
 
-		List<WebElement> allElements = driver.findElements(By.xpath("//body//input|//body//a|//body//button|//body//paper-button")); //[not(contains(@style,'display:none'))]		//body//*
+		List<WebElement> allElements = driver.findElements(By.xpath("//body//input|//body//a|//body//button|//body//paper-button|//body//textarea")); //[not(contains(@style,'display:none'))]		//body//*
 		System.out.println("inputElements size is : " + allElements.size());
 		ElementsStore elementsStore = new ElementsStore();
 		ClickElementsStore clickElementsStore = new ClickElementsStore();
@@ -54,6 +57,7 @@ public class DomReader {
 		int buttonCount = 1;
 		int lnkCount = 1;
 		int rdoCount = 1;
+		int textareaCount = 1;
 		int otherCount = 1;
 
 		TextFieldsStore tfs = new TextFieldsStore();
@@ -63,7 +67,7 @@ public class DomReader {
 		FramesStore fs = new FramesStore();
 		LinkStore lk = new LinkStore();
 		RadioButtonStore rdos = new RadioButtonStore();
-		
+		TextAreaStore tas = new TextAreaStore();
 		
 		for (WebElement element : allElements) {
 			
@@ -97,6 +101,14 @@ public class DomReader {
 					continue;
 				}
 
+				TextArea textareaEement = new TextAreaPatterns(cElement).findPattern();
+				if (textareaEement != null) {
+					elementsStore.add("TextArea" + textareaCount, textareaEement);
+					tas.add(textareaEement);
+					textareaCount++;
+					continue;
+				}
+				
 				Checkbox checkboxElement = new CheckboxPatterns(cElement).findPattern();
 				if (checkboxElement != null) {
 					elementsStore.add("Checkbox" + checkboxCount, checkboxElement);
