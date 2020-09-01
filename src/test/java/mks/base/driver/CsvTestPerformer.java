@@ -43,8 +43,12 @@ public class CsvTestPerformer {
 		return elementType.equalsIgnoreCase("Textfield");
 	}
 
+	public boolean isTextArea() {
+		return elementType.equalsIgnoreCase("TextArea");
+	}
+
 	private void validateElementType() {
-		if ((!isButton()) && (!isLink()) && (!isCheckbox()) && (!isRadio()) && (!isTextfield())) {
+		if ((!isButton()) && (!isLink()) && (!isCheckbox()) && (!isRadio()) && (!isTextfield()) && (!isTextArea())) {
 			foundException = true;
 			exceptionMessage = "The given element type '" + elementType + "' is unidentified!";
 		}
@@ -88,10 +92,10 @@ public class CsvTestPerformer {
 	private void perform() {
 		if (isButton()) {
 			wagoner.button.get(elementLabel).click();
-			Sleep.for2Seconds();
+			Sleep.for5Seconds();
 		} else if (isLink()) {
 			wagoner.link.get(elementLabel).click();
-			Sleep.for2Seconds();
+			Sleep.for5Seconds();
 		} else if (isCheckbox()) {
 			wagoner.checkBox.get(elementLabel).click();
 		} else if (isRadio()) {
@@ -99,6 +103,9 @@ public class CsvTestPerformer {
 		} else if (isTextfield()) {
 			setTextStr();
 			wagoner.textField.get(elementLabel).sendKeys(setTextStr);
+		} else if (isTextArea()) {
+			setTextStr();
+			wagoner.textArea.get(elementLabel).sendKeys(setTextStr);
 		}
 	}
 	

@@ -21,5 +21,13 @@ public class BrowserUtil {
 		return driver;
 	}
 	
+
 	
+	public WebDriver launchEdge() {
+		System.setProperty("webdriver.chrome.driver", chromeExe);
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		Sleep.forASecond();
+		return driver;
+	}
 }

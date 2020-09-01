@@ -13,6 +13,8 @@ public class Link {
 	private String linkText = null;
 	private String linkChildDivText = null;
 	
+	private String childImgTagHavingAltText = null;
+	
 	private CurrentElement cElement = null;
 	
 	public CurrentElement getcElement() {
@@ -35,6 +37,13 @@ public class Link {
 		this.linkChildDivText = linkChildDivText;
 	}
 
+	public String getChildImgTagHavingAltText() {
+		return childImgTagHavingAltText;
+	}
+	public void setChildImgTagHavingAltText(String childImgTagHavingAltText) {
+		this.childImgTagHavingAltText = childImgTagHavingAltText;
+	}
+
 
 	public WebElement compare(String elementText) {
 		if ((linkText != null) && linkText.trim().equalsIgnoreCase(elementText))
@@ -43,12 +52,17 @@ public class Link {
 			if (new ArrayList<>(Arrays.asList(linkText.split("\n"))).contains(elementText))
 				return cElement.getElement();
 		}
+		
 		if ((linkChildDivText != null) && linkChildDivText.trim().equalsIgnoreCase(elementText))
 			return cElement.getElement();
 		else if ((linkChildDivText != null) && linkChildDivText.trim().length() > 0) {
 			if (new ArrayList<>(Arrays.asList(linkChildDivText.split("\n"))).contains(elementText))
 				return cElement.getElement();
 		}
+		
+		if ((childImgTagHavingAltText != null) && childImgTagHavingAltText.trim().equalsIgnoreCase(elementText))
+			return cElement.getElement();
+		
 		return null;
 	}
 	

@@ -84,7 +84,7 @@ public class DomReader {
 			System.out.println(">>>>>>>>>>>>>>>> Started identifying for : " + cElement.getTagName());
 			System.out.println("allAttributes are : " + allAttributes);
 
-			if ((allAttributes != null) && allAttributes.contains("=")) {
+			if ((allAttributes != null) && allAttributes.contains("=") && (!cElement.isStyleNonDisplayed())) {
 
 				Frames frame = new FramePatterns(cElement).findPattern();
 				if (frame != null) {

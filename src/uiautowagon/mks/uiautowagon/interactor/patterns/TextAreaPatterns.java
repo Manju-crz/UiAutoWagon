@@ -25,6 +25,9 @@ public class TextAreaPatterns {
 	private String parentDivsSiblingLabel = null;
 	private String parentDivsSiblingInnerLabel = null;
 	
+	List<String> parentDivsSiblingDivTextIncludingSpan = new ArrayList<>();
+	private String trHavingTwoTdOneForLabelAndOneForField = null;
+	
 	CurrentElement cElement = null;
 	
 	private List<String> acceptedAttributeTypes = new ArrayList<>(Arrays.asList("textarea"));
@@ -44,7 +47,10 @@ public class TextAreaPatterns {
 	enum OusideParentTag {
 		FirstTrHavingLabelsSecondTrHavingInput,
 		DivParentsSiblingLabelUnderGrandParentDiv,
-		DivParentsSiblingChildLabelUnderGrandParentDiv;
+		DivParentsSiblingChildLabelUnderGrandParentDiv,
+		ParentDivsSiblingDivTextIncludingSpan,
+		TrHavingTwoTdOneForLabelAndOneForField
+		;
 	}
 	
 
@@ -196,17 +202,14 @@ public class TextAreaPatterns {
 
 	private boolean isDivParentsSiblingChildLabelUnderGrandParentDiv() {
 		if (parentDivsSiblingLabel == null) {
-			System.out.println("TextFieldsStore.textFieldsList.size() : " + TextFieldsStore.textFieldsList.size());
 			WebElement parentDiv = new TagsFinder().parentDiv(cElement.getElement());
 			if (parentDiv != null) {
 				List<WebElement> parentSiblingDivs = new TagsFinder().siblingDivs(parentDiv);
-				System.out.println("parentSiblingDivs are : " + parentSiblingDivs.size());
 				for (WebElement divElement : parentSiblingDivs) {
 					List<WebElement> childLabels = new TagsFinder().childLabels(divElement);
 					System.out.println("childLabels size : " + childLabels.size());
 					for (WebElement label : childLabels) {
 						parentDivsSiblingInnerLabel = label.getText();
-						System.out.println("parentDivsSiblingInnerLabel is : " + parentDivsSiblingInnerLabel);
 						if (parentDivsSiblingInnerLabel != null && parentDivsSiblingInnerLabel.trim().length() > 0) {
 							return true;
 						}
@@ -216,6 +219,51 @@ public class TextAreaPatterns {
 		}
 		return false;
 	}
+	
+	private boolean isParentDivsSiblingDivTextIncludingSpan() {
+		WebElement parentDiv = new TagsFinder().parentDiv(cElement.getElement());
+		if (parentDiv != null) {
+			List<WebElement> parentSiblingDivs = new TagsFinder().siblingDivs(parentDiv);
+			for (WebElement divElement : parentSiblingDivs) {
+				String txt = divElement.getText();
+				if (txt != null && txt.trim().length() > 0)
+					parentDivsSiblingDivTextIncludingSpan.add(txt);
+			}
+		}
+		if (parentDivsSiblingDivTextIncludingSpan.size() > 0)
+			return true;
+		return false;
+	}
+	
+
+	private boolean isTrHavingTwoTdOneForLabelAndOneForField() {
+		WebElement parent = new TagsFinder().parentElement(cElement.getElement());
+		if (!parent.getTagName().equalsIgnoreCase("td")) {
+			parent = new TagsFinder().parentElement(parent);
+			if (!parent.getTagName().equalsIgnoreCase("td")) {
+				parent = new TagsFinder().parentElement(parent);
+				if (!parent.getTagName().equalsIgnoreCase("td")) {
+					return false;
+				}
+			}
+		}
+		parent = new TagsFinder().parentElement(parent);
+		if (!parent.getTagName().equalsIgnoreCase("tr")) {
+			return false;
+		}
+		List<WebElement> innerTds = new TagsFinder().innerTDElements(parent);
+		if (innerTds.size() != 2) {
+			return false;
+		}
+		List<WebElement> innerInputs = new TagsFinder().innerTextAreaElements(innerTds.get(0));
+		if (innerInputs.size() > 0) {
+			trHavingTwoTdOneForLabelAndOneForField = innerTds.get(1).getText();
+		} else {
+			trHavingTwoTdOneForLabelAndOneForField = innerTds.get(0).getText();
+		}
+		return true;
+	}
+	
 	
 	public TextArea findPattern() {
 		if (isTextArea()) {
@@ -227,6 +275,8 @@ public class TextAreaPatterns {
 			isInputTagHavingAriaLabelholder();
 			isDivParentsSiblingLabelUnderGrandParentDiv();
 			isDivParentsSiblingChildLabelUnderGrandParentDiv();
+			isParentDivsSiblingDivTextIncludingSpan();
+			isTrHavingTwoTdOneForLabelAndOneForField();
 			
 			tf.setPlaceholder(placeholder);
 			tf.setLabelText(label);
@@ -236,6 +286,9 @@ public class TextAreaPatterns {
 			tf.setAriaLabel(ariaLabel);
 			tf.setParentDivsSiblingLabel(parentDivsSiblingLabel);
 			tf.setParentDivsSiblingInnerLabel(parentDivsSiblingInnerLabel);
+			tf.setParentDivsSiblingDivTextIncludingSpan(parentDivsSiblingDivTextIncludingSpan);
+			tf.setTrHavingTwoTdOneForLabelAndOneForField(trHavingTwoTdOneForLabelAndOneForField);
+			
 			tf.setcElement(cElement);
 			return tf;
 		}

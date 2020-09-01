@@ -1,9 +1,7 @@
 package mks.uiautowagon.interactor.patterns;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.openqa.selenium.WebElement;
 
@@ -11,7 +9,6 @@ import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.interutil.SupportUtil;
 import mks.uiautowagon.interactor.interutil.TagsFinder;
 import mks.uiautowagon.interactor.patterns.objects.Button;
-import mks.uiautowagon.interactor.patterns.objects.Checkbox;
 
 public class ButtonPatterns {
 	
@@ -25,7 +22,6 @@ public class ButtonPatterns {
 	private String paperButtonArialLabel = null;
 	private String paperButtonInnerYtFormattedString = null;
 	
-	
 	public ButtonPatterns(CurrentElement cElement) {
 		this.cElement = cElement;
 	}
@@ -36,7 +32,7 @@ public class ButtonPatterns {
 	}
 	
 	enum WithInputTag {
-		InputTagHavingValueTextWithTypeSubmit,
+		InputTagHavingValueTextWithTypeSubmitOrReset,
 		InputTypeSubmitWithSiblingTagSpanText;
 	}
 
@@ -53,6 +49,8 @@ public class ButtonPatterns {
 			return true;
 		} else if (tagName.equalsIgnoreCase("input") && cElement.getTypeAttribute().equalsIgnoreCase("submit")) {
 			return true;
+		} else if (tagName.equalsIgnoreCase("input") && cElement.getTypeAttribute().equalsIgnoreCase("reset")) {
+			return true;
 		}
 		return false;
 	}
@@ -67,7 +65,7 @@ public class ButtonPatterns {
 		return siblingSpanTexts.isEmpty();
 	}
 	
-	private boolean isInputTagHavingValueTextWithTypeSubmit() {
+	private boolean isInputTagHavingValueTextWithTypeSubmitOrReset() {
 		inputValueText = cElement.getElement().getAttribute("value");
 		if (inputValueText != null) {
 			return true;
@@ -99,17 +97,19 @@ public class ButtonPatterns {
 		}
 		return false;
 	}
-
+	
 	public Button findPattern() {
 		if (isButton()) {
 			Button btn = new Button();
 			isButtonTagWithInnerTagsSpanText();
-			isInputTagHavingValueTextWithTypeSubmit();
+			isInputTagHavingValueTextWithTypeSubmitOrReset();
 			isInputTypeSubmitWithSiblingTagSpanText();
+			
 			btn.setButtonText(buttonText);
 			btn.setInputValueText(inputValueText);
 			btn.setButtonInnerSpanTexts(buttonInnerSpanTexts);
 			btn.setSiblingSpanTexts(siblingSpanTexts);
+			
 			btn.setcElement(cElement);
 			return btn;
 		} else if (isPaperButton()) {

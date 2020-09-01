@@ -7,8 +7,10 @@ import mks.uiautowagon.interactor.components.CheckBoxComponent;
 import mks.uiautowagon.interactor.components.ClickElementComponent;
 import mks.uiautowagon.interactor.components.LinkComponent;
 import mks.uiautowagon.interactor.components.RadioButtonComponent;
+import mks.uiautowagon.interactor.components.TextAreaComponent;
 import mks.uiautowagon.interactor.components.TextFieldComponent;
 import mks.uiautowagon.interactor.patterns.TextFieldPatterns;
+import mks.uiautowagon.interactor.patterns.objects.Checkbox;
 import mks.uiautowagon.interactor.patterns.objects.Link;
 import mks.uiautowagon.interactor.patterns.objects.RadioButton;
 import mks.uiautowagon.interactor.patterns.objects.TextField;
@@ -27,6 +29,7 @@ public class WagonerFacade extends MyDriver{
 	public ButtonComponent button = null;
 	public LinkComponent link = null;
 	public RadioButtonComponent radioButton = null;
+	public TextAreaComponent textArea = null;
 	
 	public ClickElementComponent clickElement = null;
 	
@@ -64,6 +67,7 @@ public class WagonerFacade extends MyDriver{
 		link = new LinkComponent();
 		radioButton = new RadioButtonComponent();
 		clickElement = new ClickElementComponent();
+		textArea = new TextAreaComponent();
 	}
 	
 
@@ -78,15 +82,24 @@ public class WagonerFacade extends MyDriver{
 		for (Link radioButton : LinkStore.linkList) {
 			System.out.println("TextFieldsStore.textFieldsList : " + radioButton.toString());
 		}
-		RadioButtonStore radioButtons = new RadioButtonStore();
-		System.out.println("radioButtons.rdoList.size() is : " + radioButtons.rdoList.size());
-
+		
 		System.out.println("TextFieldsStore.textFieldsList.size() is : " + TextFieldsStore.textFieldsList.size());
 		for (TextField radioButton : TextFieldsStore.textFieldsList) {
 			System.out.println("TextFieldsStore.textFieldsList : " + radioButton.toString());
 		}
 		System.out.println("Clickeleent store : " + ClickElementsStore.clickElements.size());
 
+		System.out.println("CheckboxStore.textFieldsList.size() is : " + CheckboxStore.checkboxList.size());
+		for (Checkbox radioButton : CheckboxStore.checkboxList) {
+			System.out.println("CheckboxStore.textFieldsList : " + radioButton.toString());
+		}
+		
+		RadioButtonStore radioButtons = new RadioButtonStore();
+		System.out.println("radioButtons.rdoList.size() is : " + radioButtons.rdoList.size());
+		for (RadioButton radioButton : RadioButtonStore.rdoList) {
+			System.out.println("radioButtons.rdoList : " + radioButton.toString());
+		}
+		
 	}
 
 }

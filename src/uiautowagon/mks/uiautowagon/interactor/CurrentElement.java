@@ -47,5 +47,17 @@ public class CurrentElement {
 		}
 		return elementTxt;
 	}
-
+	
+	public boolean isStyleNonDisplayed() {
+		String styleTxt = getElement().getAttribute("style");
+		System.out.println("styleTxt txt is : " + styleTxt);
+		if (styleTxt != null) {
+			if (styleTxt.trim().equalsIgnoreCase("display: none;")) {
+				System.out.println("styleTxt became true..");
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

@@ -21,9 +21,13 @@ public class CheckboxPatterns {
 	private String parentLabelText = null;
 	private String grandParentLabelText = null;
 	
+	private String upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan = null;
+	
 	WebElement siblingLabel = null;
 	WebElement parentLabel = null;
 
+	private String parentPHavingText = null;
+	
 	CurrentElement cElement = null;
 	
 	public CheckboxPatterns(CurrentElement cElement) {
@@ -43,7 +47,9 @@ public class CheckboxPatterns {
 
 	enum ParentBased {
 		InputTagwithParentLabel,
-		InputTagwithGrandParentLabel;
+		InputTagwithGrandParentLabel,
+		Upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan,
+		InputTagWithParentPHavingText;
 	}
 	
 	private boolean isCheckbox() {
@@ -93,6 +99,74 @@ public class CheckboxPatterns {
 		return false;
 	}
 	
+	private boolean isUpto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan() {
+
+		WebElement parent1 = new TagsFinder().parentElement(cElement.getElement());
+		int val = utilize(parent1);
+		if (val == 1)
+			return true;
+		else if (val == -1)
+			return false;
+
+		parent1 = new TagsFinder().parentElement(parent1);
+		val = utilize(parent1);
+		if (val == 1)
+			return true;
+		else if (val == -1)
+			return false;
+
+		parent1 = new TagsFinder().parentElement(parent1);
+		val = utilize(parent1);
+		if (val == 1)
+			return true;
+		else if (val == -1)
+			return false;
+
+		parent1 = new TagsFinder().parentElement(parent1);
+		val = utilize(parent1);
+		if (val == 1)
+			return true;
+		else if (val == -1)
+			return false;
+
+		return false;
+	}
+
+	private int utilize(WebElement parent) {
+
+		String parent1Class = parent.getAttribute("class");
+		if ((parent1Class != null) && parent1Class.trim().toLowerCase().contains("checkbox")) {
+			List<WebElement> innerSpans = new TagsFinder().innerSpanElements(parent);
+			for (WebElement span : innerSpans) {
+				String spnTxt = span.getText();
+				if (spnTxt != null && spnTxt.trim().length() > 0) {
+					upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan = spnTxt;
+					System.out.println("upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan si : " + upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan);
+					return 1;
+				}
+			}
+		} else {
+			return -1;
+		}
+		return 0;
+	}
+	
+	private boolean isInputTagWithParentPHavingText() {
+		WebElement parentElement = new TagsFinder().parentP(cElement.getElement());
+		System.out.println("isInputTagWithParentFontHavingText atrtibutes : " + cElement.getAttributes());
+		if (parentElement != null) {
+			System.out.println("parentElement s not null");
+			String txt = parentElement.getText();
+			if (txt != null && txt.trim().length() > 0) {
+				parentPHavingText = txt.trim();
+				System.out.println("txt is --: " + txt.trim());
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	public Checkbox findPattern() {
 		if (isCheckbox()) {
 			Checkbox chk = new Checkbox();
@@ -101,6 +175,9 @@ public class CheckboxPatterns {
 			isInputTagWithWithAnchorParent();
 			isInputTagwithParentLabel();
 			isInputTagwithGrandParentLabel();
+			isUpto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan();
+			isInputTagWithParentPHavingText();
+			
 			chk.setCheckBoxLabel(label);
 			chk.setSpanTexts(spanTexts);
 			chk.setParentLabelText(parentLabelText);
@@ -109,6 +186,9 @@ public class CheckboxPatterns {
 			chk.setcElement(cElement);
 			chk.setSiblingLabel(siblingLabel);
 			chk.setParentLabel(parentLabel);
+			chk.setUpto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan(upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan);
+			chk.setParentPHavingText(parentPHavingText);
+			
 			return chk;
 		}
 		return null;

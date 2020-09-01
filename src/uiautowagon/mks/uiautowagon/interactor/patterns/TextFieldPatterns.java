@@ -25,9 +25,23 @@ public class TextFieldPatterns {
 	private String parentDivsSiblingLabel = null;
 	private String parentDivsSiblingInnerLabel = null;
 	
+	private String inputValue = null;
+	private String siblingSpanText = null;
+	private String parentBTxt = null;
+	
+	private String grandParentsSiblingHavingInnerSpanTxt = null;
+	private String parentsSiblingH3Label = null;
+	private String parentsSiblingH4Label = null;
+	private String parentsSiblingH5Label = null;
+	
+	private String siblingsInnerLabel = null;
+	private String grandParentDivsSiblingDivsChildSpan = null;
+	
+	private String trHavingTwoTdOneForLabelAndOneForField = null;
+	
 	CurrentElement cElement = null;
 	
-	private List<String> acceptedAttributeTypes = new ArrayList<>(Arrays.asList("password", "text", "email", "tel"));
+	private List<String> acceptedAttributeTypes = new ArrayList<>(Arrays.asList("password", "text", "email", "tel", "search"));
 	
 	public TextFieldPatterns(CurrentElement cElement) {
 		this.cElement = cElement;
@@ -36,15 +50,27 @@ public class TextFieldPatterns {
 	enum WithinAParentTag {
 		InputTagHavingPlaceholder,
 		InputTagWithSiblingedLabel,
+		InputTagWithSiblingedSpan,
 		InputTagWithSiblingedDivPlaceholder,
-		InputTagHavingAriaLabelholder;
+		InputTagHavingAriaLabelholder,
+		InputTagHavingValue;
 	}
 	
 	
 	enum OusideParentTag {
 		FirstTrHavingLabelsSecondTrHavingInput,
 		DivParentsSiblingLabelUnderGrandParentDiv,
-		DivParentsSiblingChildLabelUnderGrandParentDiv;
+		DivParentsSiblingChildLabelUnderGrandParentDiv,
+		
+		BParentTagHavingTextIncludingInput,
+		GrandParentsSiblingHavingInnerSpan,
+		ParentsSiblingH3Label,
+		ParentsSiblingH4Label,
+		ParentsSiblingH5Label,
+		SiblingsInnerLabel,
+		GrandParentDivsSiblingDivsChildSpan,
+		TrHavingTwoTdOneForLabelAndOneForField
+		;
 	}
 	
 
@@ -91,7 +117,19 @@ public class TextFieldPatterns {
 		}
 		return false;
 	}
-	
+
+	private boolean isInputTagWithSiblingedSpan() {
+		
+		System.out.println("cElement.getElement()attrte : " + cElement.getAttributes());
+		WebElement siblingSpanTxtElement = new TagsFinder().siblingSpan(cElement.getElement());
+		System.out.println("siblingSpanTxtElement s : " + siblingSpanTxtElement);
+		if (siblingSpanTxtElement != null) {
+			siblingSpanText = siblingSpanTxtElement.getText().trim();
+			System.out.println("siblingSpanText -- " + siblingSpanText);
+			return true;
+		}
+		return false;
+	}
 	
 	private boolean isFirstTrHavingLabelsSecondTrHavingInput() {
 
@@ -125,7 +163,6 @@ public class TextFieldPatterns {
 		}
 		return false;
 	}
-	
 	
 	private boolean isInputTagWithSiblingedDivPlaceholder() {
 		
@@ -176,19 +213,21 @@ public class TextFieldPatterns {
 	}
 
 	private boolean isDivParentsSiblingLabelUnderGrandParentDiv() {
-		if ((label == null) && (trParallelLabel == null) && (ariaLabel == null)) {
+		//if ((label == null) && (trParallelLabel == null) && (ariaLabel == null)) {
 			WebElement parentDiv = new TagsFinder().parentDiv(cElement.getElement());
 			if (parentDiv != null) {
+				System.out.println("cElement's attributes : " + cElement.getAttributes());
 				WebElement parentSiblingLabel = new TagsFinder().siblingLabel(parentDiv);
+				System.out.println("parentSiblingLabel -- " + parentSiblingLabel);
 				if (parentSiblingLabel != null) {
+					System.out.println("parentSiblingLabel is not null-- and the text is : " + parentSiblingLabel.getText());
 					parentDivsSiblingLabel = parentSiblingLabel.getText();
 					return true;
 				}
 			}
-		}
+		//}
 		return false;
 	}
-	
 
 	private boolean isDivParentsSiblingChildLabelUnderGrandParentDiv() {
 		if (parentDivsSiblingLabel == null) {
@@ -212,6 +251,154 @@ public class TextFieldPatterns {
 		}
 		return false;
 	}
+
+	private boolean inputTagHavingValue() {
+		inputValue = cElement.getElement().getAttribute("value");
+		if (inputValue != null)
+			return true;
+		return false;
+	}
+	
+	private boolean isBParentTagHavingTextIncludingInput() {
+		WebElement parentB = new TagsFinder().parentB(cElement.getElement());
+		if (parentB != null) {
+			parentBTxt = parentB.getText();
+			if (parentBTxt != null)
+				return true;
+		}
+		return false;
+	}
+	
+	private boolean isGrandParentsSiblingHavingInnerSpan() {
+		if ((label == null) && (trParallelLabel == null) && (ariaLabel == null) && (parentDivsSiblingLabel == null)
+				&& (parentDivsSiblingInnerLabel == null) && (siblingSpanText == null) && (parentBTxt == null)) {
+			WebElement parentDiv = new TagsFinder().parentDiv(cElement.getElement());
+			if (parentDiv != null) {
+				WebElement grandParentDiv = new TagsFinder().parentDiv(parentDiv);
+				if (grandParentDiv != null) {
+					WebElement grandParentsParentDiv = new TagsFinder().parentDiv(grandParentDiv);
+					if (grandParentsParentDiv != null) {
+						List<WebElement> innerSpans = new TagsFinder().innerSpanElements(grandParentsParentDiv);
+						if (innerSpans.size() > 0) {
+							grandParentsSiblingHavingInnerSpanTxt = innerSpans.get(0).getText();
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	
+	private boolean isParentsSiblingH3Label() {
+		WebElement parent = new TagsFinder().parentElement(cElement.getElement());
+		WebElement grandParent = new TagsFinder().parentDiv(parent);
+		if (grandParent != null) {
+			List<WebElement> childH3s = new TagsFinder().childH3s(grandParent);
+			for (WebElement h3 : childH3s) {
+				String h3Txt = h3.getText();
+				if (h3Txt != null && h3Txt.trim().length() > 0) {
+					parentsSiblingH3Label = h3Txt;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean isParentsSiblingH4Label() {
+		WebElement parent = new TagsFinder().parentElement(cElement.getElement());
+		WebElement grandParent = new TagsFinder().parentDiv(parent);
+		if (grandParent != null) {
+			List<WebElement> childH4s = new TagsFinder().childH4s(grandParent);
+			for (WebElement h4 : childH4s) {
+				String h4Txt = h4.getText();
+				if (h4Txt != null && h4Txt.trim().length() > 0) {
+					parentsSiblingH4Label = h4Txt;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean isParentsSiblingH5Label() {
+		WebElement parent = new TagsFinder().parentElement(cElement.getElement());
+		WebElement grandParent = new TagsFinder().parentDiv(parent);
+		if (grandParent != null) {
+			List<WebElement> childH5s = new TagsFinder().childH5s(grandParent);
+			for (WebElement h5 : childH5s) {
+				String h5Txt = h5.getText();
+				if (h5Txt != null && h5Txt.trim().length() > 0) {
+					parentsSiblingH5Label = h5Txt;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	
+	private boolean isSiblingsInnerLabel() {
+		WebElement parent = new TagsFinder().parentElement(cElement.getElement());
+		List<WebElement> innerLabels = new TagsFinder().innerLabelElements(parent);
+		for (WebElement labelElement : innerLabels) {
+			String lblTxt = labelElement.getText();
+			if (lblTxt != null && lblTxt.trim().length() > 0) {
+				siblingsInnerLabel = lblTxt;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean isGrandParentDivsSiblingDivsChildSpan() {
+		WebElement parent = new TagsFinder().parentElement(cElement.getElement());
+		WebElement grandParentDiv = new TagsFinder().parentDiv(parent);
+		if (grandParentDiv != null) {
+			List<WebElement> sibingDivs = new TagsFinder().siblingDivs(grandParentDiv);
+			for (WebElement div : sibingDivs) {
+				List<WebElement> childSpans = new TagsFinder().childSpans(div);
+				for (WebElement spn : childSpans) {
+					String childSpanTxt = spn.getText();
+					if (childSpanTxt != null && childSpanTxt.trim().length() > 0) {
+						grandParentDivsSiblingDivsChildSpan = childSpanTxt;
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean isTrHavingTwoTdOneForLabelAndOneForField() {
+		WebElement parent = new TagsFinder().parentElement(cElement.getElement());
+		if (!parent.getTagName().equalsIgnoreCase("td")) {
+			parent = new TagsFinder().parentElement(parent);
+			if (!parent.getTagName().equalsIgnoreCase("td")) {
+				parent = new TagsFinder().parentElement(parent);
+				if (!parent.getTagName().equalsIgnoreCase("td")) {
+					return false;
+				}
+			}
+		}
+		parent = new TagsFinder().parentElement(parent);
+		if (!parent.getTagName().equalsIgnoreCase("tr")) {
+			return false;
+		}
+		List<WebElement> innerTds = new TagsFinder().innerTDElements(parent);
+		if (innerTds.size() != 2) {
+			return false;
+		}
+		List<WebElement> innerInputs = new TagsFinder().innerInputElements(innerTds.get(0));
+		if (innerInputs.size() > 0) {
+			trHavingTwoTdOneForLabelAndOneForField = innerTds.get(1).getText();
+		} else {
+			trHavingTwoTdOneForLabelAndOneForField = innerTds.get(0).getText();
+		}
+		return true;
+	}
 	
 	public TextField findPattern() {
 		if (isTextField()) {
@@ -223,15 +410,35 @@ public class TextFieldPatterns {
 			isInputTagHavingAriaLabelholder();
 			isDivParentsSiblingLabelUnderGrandParentDiv();
 			isDivParentsSiblingChildLabelUnderGrandParentDiv();
+			inputTagHavingValue();
+			isInputTagWithSiblingedSpan();
+			isBParentTagHavingTextIncludingInput();
+			isGrandParentsSiblingHavingInnerSpan();
+			isParentsSiblingH3Label();
+			isParentsSiblingH4Label();
+			isParentsSiblingH5Label();
+			isSiblingsInnerLabel();
+			isGrandParentDivsSiblingDivsChildSpan();
+			isTrHavingTwoTdOneForLabelAndOneForField();
 			
 			tf.setPlaceholder(placeholder);
 			tf.setLabelText(label);
 			tf.setTrParallelLabel(trParallelLabel);
-			System.out.println("divNeighbourPlaceholder finally fnd is : " + divNeighbourPlaceholder);
 			tf.setDivNeighbourPlaceholder(divNeighbourPlaceholder);
 			tf.setAriaLabel(ariaLabel);
 			tf.setParentDivsSiblingLabel(parentDivsSiblingLabel);
 			tf.setParentDivsSiblingInnerLabel(parentDivsSiblingInnerLabel);
+			tf.setInputValue(inputValue);
+			tf.setSiblingSpanText(siblingSpanText);
+			tf.setParentBTxt(parentBTxt);
+			tf.setGrandParentsSiblingHavingInnerSpanTxt(grandParentsSiblingHavingInnerSpanTxt);
+			tf.setParentsSiblingH3Label(parentsSiblingH3Label);
+			tf.setParentsSiblingH4Label(parentsSiblingH4Label);
+			tf.setParentsSiblingH5Label(parentsSiblingH5Label);
+			tf.setSiblingsInnerLabel(siblingsInnerLabel);
+			tf.setGrandParentDivsSiblingDivsChildSpan(grandParentDivsSiblingDivsChildSpan);
+			tf.setTrHavingTwoTdOneForLabelAndOneForField(trHavingTwoTdOneForLabelAndOneForField);
+			
 			tf.setcElement(cElement);
 			return tf;
 		}

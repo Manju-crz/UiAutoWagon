@@ -22,7 +22,9 @@ public class CheckBoxComponent implements WagonerElements {
 		WebElement element = new CheckboxStore().find(label);
 		if (element == null) {
 			new WagonerFacade().reload();
-			element = new CheckboxStore().find(label);
+			CheckboxStore chkStore = new CheckboxStore();
+			System.out.println("11111");
+			element = chkStore.find(label);
 		}
 		return element;
 	}

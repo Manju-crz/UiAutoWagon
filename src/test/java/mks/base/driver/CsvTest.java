@@ -17,7 +17,7 @@ public class CsvTest extends DriverBase {
 
 	String fs = File.separator;
 	String testDataFolder = System.getProperty("user.dir") + fs + "TestData" + fs;
-	String csvDataFile = testDataFolder + "UiAutoWagon - Sheet10.csv";
+	String csvDataFile = testDataFolder + "UiAutoWagon - Manju.csv";
 	String csvDataResultFile = testDataFolder + "Results" + fs + "Result_" + System.currentTimeMillis() + ".csv";
 
 	String errorMsg = null;
@@ -42,6 +42,7 @@ public class CsvTest extends DriverBase {
 			List<String> filteredRowData = validateRowData(rowData);
 
 			String URL = filteredRowData.get(0);
+			System.out.println("Executing the URL : " + URL);
 			if (filteredRowDataError != null) {
 				writer = new CsvWriter(resultCsv);
 				writer.writeRow(URL, "INVALID_ROW_DATA", filteredRowDataError);

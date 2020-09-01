@@ -19,7 +19,7 @@ public class CheckboxStore {
 	
 
 	public WebElement find(String elementText) {
-
+		System.out.println("checkboxList.size() is :  " + checkboxList.size());
 		Checkbox tf = new Checkbox();
 		for (int i = 0; i < checkboxList.size(); i++) {
 			tf = checkboxList.get(i);

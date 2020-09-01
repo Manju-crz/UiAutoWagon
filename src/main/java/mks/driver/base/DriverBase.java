@@ -9,14 +9,16 @@ import org.testng.annotations.BeforeClass;
 
 
 import mks.driver.webutils.BrowserUtil;
+import mks.driver.webutils.ChromeDriverManager;
 
 public class DriverBase {
 	
 	protected WebDriver driver = null;
 	
 	@BeforeClass
-	public void getBrowser() {
-		driver = new BrowserUtil().launchChrome();
+	public void getBrowser() throws Exception {
+		//driver = new BrowserUtil().launchChrome();
+		driver = ChromeDriverManager.launchChrome();
 	}
 	
 	@AfterClass

@@ -17,6 +17,10 @@ public class Checkbox {
 	private String grandParentLabelText = null;
 
 	private WebElement siblingLabel = null;
+	
+	private String upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan = null;
+	private String parentPHavingText = null;
+	
 	public WebElement getSiblingLabel() {
 		return siblingLabel;
 	}
@@ -77,8 +81,25 @@ public class Checkbox {
 		this.spanTexts = spanTexts;
 	}
 
+	public String getUpto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan() {
+		return upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan;
+	}
+
+	public void setUpto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan(
+			String upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan) {
+		this.upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan = upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan;
+	}
+
 	public boolean isParentElementAnchor() {
 		return isParentElementAnchor;
+	}
+
+	public String getParentPHavingText() {
+		return parentPHavingText;
+	}
+
+	public void setParentPHavingText(String parentPHavingText) {
+		this.parentPHavingText = parentPHavingText;
 	}
 
 	public void setParentElementAnchor(boolean isParentElementAnchor) {
@@ -95,16 +116,27 @@ public class Checkbox {
 			return parentLabel;
 		else if ((grandParentLabelText != null) && grandParentLabelText.equalsIgnoreCase(elementText))
 			return cElement.getElement();
+		else if ((parentPHavingText != null) && parentPHavingText.equalsIgnoreCase(elementText))
+			return cElement.getElement();
+		
+		if ((upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan != null) && upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan.equalsIgnoreCase(elementText)) {
+			System.out.println("upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan returned with tx t : " + upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan);
+			return cElement.getElement();
+		}
+		
 		return null;
 	}
 	
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		if (checkBoxLabel != null) {
-			str.append("CheckBox Label : " + checkBoxLabel);
+			str.append("CheckBox Label : " + checkBoxLabel + ";");
 		}
 		if (!spanTexts.isEmpty()) {
-			str.append("CheckBox SpanTexts : " + spanTexts);
+			str.append("CheckBox SpanTexts : " + spanTexts + ";");
+		}
+		if (upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan != null) {
+			str.append("upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan Txt : " + upto4LevelParentsHavingClassWithCheckboxTxtAndContainsInnerSpan + ";");
 		}
 		if (cElement.getElement() != null) {
 			str.append("Element tag : " + cElement.getTagName());

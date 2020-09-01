@@ -18,6 +18,9 @@ public class LinkPatterns {
 	
 	private String linkText = null;
 	private String linkChildDivText = null;
+	
+	private String childImgTagHavingAltText = null;
+	
 	CurrentElement cElement = null;
 	
 	
@@ -27,7 +30,8 @@ public class LinkPatterns {
 
 	enum WithinAnchorTag {
 		AnchorTagWithText,
-		AnchorTagChildDivText;
+		AnchorTagChildDivText,
+		ChildImgTagHavingAltText;
 	}
 
 	private boolean isLink() {
@@ -62,14 +66,10 @@ public class LinkPatterns {
 	}
 
 	private boolean isLinkChildDivTextFound() {
-		System.out.println("isLinkChildDivTextFound beginened");
 		if (!isLinkTextValid()) {
-			System.out.println("isLinkTextFound is not");
 			List<WebElement> childDiv = new TagsFinder().childDivs(cElement.getElement());
-			System.out.println("childDiv size is : " + childDiv);
 			for (WebElement div : childDiv) {
 				linkChildDivText = div.getText();
-				System.out.println("linkChildDivText is : " + linkChildDivText);
 				if ((linkChildDivText != null) && linkChildDivText.trim().length() > 0) {
 					return true;
 				}
@@ -78,14 +78,32 @@ public class LinkPatterns {
 		return false;
 	}
 	
+	private boolean isChildImgTagHavingAltText() {
+		if (!isLinkTextValid()) {
+			List<WebElement> childImg = new TagsFinder().childImgs(cElement.getElement());
+			System.out.println("childImg size s : " + childImg.size());
+			for (WebElement img : childImg) {
+				String altTxt = img.getAttribute("alt");
+				System.out.println("altTxt ss : " + altTxt);
+				if ((altTxt != null) && altTxt.trim().length() > 0) {
+					childImgTagHavingAltText = altTxt;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	public Link findPattern() {
 		if (isLink()) {
 			Link lnk = new Link();
 			isLinkTextFound();
 			isLinkChildDivTextFound();
+			isChildImgTagHavingAltText();
+			
 			lnk.setLinkText(linkText);
 			lnk.setLinkChildDivText(linkChildDivText);
+			lnk.setChildImgTagHavingAltText(childImgTagHavingAltText);
 			lnk.setcElement(cElement);
 			return lnk;
 		}

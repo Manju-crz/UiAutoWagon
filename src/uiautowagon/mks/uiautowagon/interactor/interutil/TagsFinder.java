@@ -39,6 +39,19 @@ public class TagsFinder {
 		return null;
 	}
 
+	public WebElement siblingSpan(WebElement element) {
+		System.out.println("Trying to find the sibling label");
+		List<WebElement> siblings = siblings(element);
+
+		for (WebElement tempElement : siblings) {
+			System.out.println("for loop for " + tempElement.getTagName());
+			if (tempElement.getTagName().equalsIgnoreCase("span")) {
+				return tempElement;
+			}
+		}
+		return null;
+	}
+	
 	public List<WebElement> siblingSpans(WebElement element) {
 		List<WebElement> siblings = siblings(element);
 		List<WebElement> siblingSpanElements = new ArrayList<>();
@@ -72,6 +85,11 @@ public class TagsFinder {
 		return innerSpanElements;
 	}
 
+	public List<WebElement> innerLabelElements(WebElement element) {
+		List<WebElement> innerLabelElements = element.findElements(By.xpath(".//label"));
+		return innerLabelElements;
+	}
+	
 	public List<WebElement> innerElements(WebElement element) {
 		List<WebElement> innerSpanElements = element.findElements(By.xpath(".//*"));
 		return innerSpanElements;
@@ -79,6 +97,16 @@ public class TagsFinder {
 
 	public List<WebElement> innerInputElements(WebElement element) {
 		List<WebElement> innerSpanElements = element.findElements(By.xpath(".//input"));
+		return innerSpanElements;
+	}
+
+	public List<WebElement> innerTextAreaElements(WebElement element) {
+		List<WebElement> innerSpanElements = element.findElements(By.xpath(".//textarea"));
+		return innerSpanElements;
+	}
+
+	public List<WebElement> innerTDElements(WebElement element) {
+		List<WebElement> innerSpanElements = element.findElements(By.xpath(".//td"));
 		return innerSpanElements;
 	}
 
@@ -111,8 +139,39 @@ public class TagsFinder {
 
 	public WebElement parentDiv(WebElement element) {
 		WebElement parent = parentElement(element);
-		System.out.println("parentTD one is: " + parent.getTagName());
 		if (parent.getTagName().equalsIgnoreCase("div")) {
+			return parent;
+		}
+		return null;
+	}
+
+	public WebElement parentFont(WebElement element) {
+		WebElement parent = parentElement(element);
+		if (parent.getTagName().equalsIgnoreCase("font")) {
+			return parent;
+		}
+		return null;
+	}
+
+	public WebElement parentP(WebElement element) {
+		WebElement parent = parentElement(element);
+		if (parent.getTagName().equalsIgnoreCase("p")) {
+			return parent;
+		}
+		return null;
+	}
+	
+	public WebElement parentLabel(WebElement element) {
+		WebElement parent = parentElement(element);
+		if (parent.getTagName().equalsIgnoreCase("label")) {
+			return parent;
+		}
+		return null;
+	}
+	
+	public WebElement parentB(WebElement element) {
+		WebElement parent = parentElement(element);
+		if (parent.getTagName().equalsIgnoreCase("b")) {
 			return parent;
 		}
 		return null;
@@ -126,10 +185,30 @@ public class TagsFinder {
 		return element.findElements(By.xpath("./td"));
 	}
 
+	public List<WebElement> childH3s(WebElement element) {
+		return element.findElements(By.xpath("./h3"));
+	}
+
+	public List<WebElement> childH4s(WebElement element) {
+		return element.findElements(By.xpath("./h4"));
+	}
+
+	public List<WebElement> childH5s(WebElement element) {
+		return element.findElements(By.xpath("./h5"));
+	}
+	
 	public List<WebElement> childLabels(WebElement element) {
 		return element.findElements(By.xpath("./label"));
 	}
 
+	public List<WebElement> childSpans(WebElement element) {
+		return element.findElements(By.xpath("./span"));
+	}
+	
+	public List<WebElement> childImgs(WebElement element) {
+		return element.findElements(By.xpath("./img"));
+	}
+	
 	public List<WebElement> childDivs(WebElement element) {
 		return element.findElements(By.xpath("./div"));
 	}

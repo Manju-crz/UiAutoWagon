@@ -1,5 +1,8 @@
 package mks.uiautowagon.interactor.patterns.objects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.WebElement;
 
 import mks.uiautowagon.interactor.CurrentElement;
@@ -16,6 +19,9 @@ public class TextArea {
 	
 	private String parentDivsSiblingLabel = null;
 	private String parentDivsSiblingInnerLabel = null;
+	
+	List<String> parentDivsSiblingDivTextIncludingSpan = new ArrayList<>();
+	private String trHavingTwoTdOneForLabelAndOneForField = null;
 	
 	private CurrentElement cElement = null;
 	
@@ -83,7 +89,22 @@ public class TextArea {
 		this.parentDivsSiblingInnerLabel = parentDivsSiblingInnerLabel;
 	}
 
-	
+	public List<String> getParentDivsSiblingDivTextIncludingSpan() {
+		return parentDivsSiblingDivTextIncludingSpan;
+	}
+
+	public void setParentDivsSiblingDivTextIncludingSpan(List<String> parentDivsSiblingDivTextIncludingSpan) {
+		this.parentDivsSiblingDivTextIncludingSpan = parentDivsSiblingDivTextIncludingSpan;
+	}
+
+	public String getTrHavingTwoTdOneForLabelAndOneForField() {
+		return trHavingTwoTdOneForLabelAndOneForField;
+	}
+
+	public void setTrHavingTwoTdOneForLabelAndOneForField(String trHavingTwoTdOneForLabelAndOneForField) {
+		this.trHavingTwoTdOneForLabelAndOneForField = trHavingTwoTdOneForLabelAndOneForField;
+	}
+
 	public CurrentElement getcElement() {
 		return cElement;
 	}
@@ -110,6 +131,11 @@ public class TextArea {
 			return cElement.getElement();
 		else if ((parentDivsSiblingInnerLabel != null) && parentDivsSiblingInnerLabel.trim().equalsIgnoreCase(elementText))
 			return cElement.getElement();
+		else if (parentDivsSiblingDivTextIncludingSpan.size() > 0 && parentDivsSiblingDivTextIncludingSpan.contains(elementText))
+			return cElement.getElement();
+		else if ((trHavingTwoTdOneForLabelAndOneForField != null) && trHavingTwoTdOneForLabelAndOneForField.trim().equalsIgnoreCase(elementText))
+			return cElement.getElement();
+		
 		return null;
 	}
 	

@@ -17,6 +17,13 @@ public class RadioButtonPatterns {
 	private String parentDivText = null;
 	private String divParentingToInputWithParentSiblingText = null;
 	
+	private String parentLabelsInnerSpanText = null;
+	private String grandParentLabelsInnerSpansParentDivText = null;
+	
+	private String parentFontHavingText = null;
+	private String inputHavingAriaLabel = null;
+	private String inputHavingValue = null;
+	
 	CurrentElement cElement = null;
 	
 	public RadioButtonPatterns(CurrentElement cElement) {
@@ -28,7 +35,12 @@ public class RadioButtonPatterns {
 		SiblingedInputaAndLabels,
 		LabelParentingToInput,
 		DivParentingToInput,
-		DivParentingToInputWithParentSiblingText;
+		DivParentingToInputWithParentSiblingText,
+		ParentLabelsInnerSpanText,
+		GrandParentLabelsInnerSpansParentDivText,
+		InputTagWithParentFontHavingText,
+		InputHavingAriaLabel,
+		InputHavingValueAttribute;
 	}
 	
 	private boolean isRadioButton() {
@@ -37,7 +49,7 @@ public class RadioButtonPatterns {
 			return true;
 		return false;
 	}
-	
+
 	private boolean isSiblingedInputAndLabels() {
 		String attributes = cElement.getAttributes();
 		List<WebElement> siblingInputs = new TagsFinder().siblingInputs(cElement.getElement());
@@ -96,30 +108,21 @@ public class RadioButtonPatterns {
 	
 	private boolean isDivParentingToInputWithParentSiblingText() {
 
-		System.out.println("Radio button not yet found");
 		if ((!isSiblingedInputAndLabels()) && (!isLabelParentingToInput()) && (!isDivParentingToInput())) {
-			System.out.println("Radio button going to find...");
 			List<WebElement> siblings = new TagsFinder().siblings(cElement.getElement());
-			System.out.println("Element siblings are : " + siblings.size());
 			if (siblings.size() > 1) {
 				return false;
 			} else {
-				System.out.println("Entered else part to find ...");
 				int ipcount = -1, finalIdx = -1;
 				List<String> allTexts = new ArrayList<>();
 				WebElement grandParent = new TagsFinder().parentDiv(new TagsFinder().parentDiv(siblings.get(0)));
 
 				if (grandParent != null) {
-					System.out.println("grandParent also found amd tht s " + grandParent.getTagName());
 					List<WebElement> parentSiblings = new TagsFinder().childElements(grandParent);
-					System.out.println("Parent elements size is : " + parentSiblings.size());
 					String attributes = cElement.getAttributes();
 					for (int i = 0; i < parentSiblings.size(); i++) {
-						System.out.println(i + "Parent element tag is : " + parentSiblings.get(i).getTagName());
 						List<WebElement> child = new TagsFinder().childElements(parentSiblings.get(i));
-						System.out.println("Child elements size of parent " + child.size());
 						if (child.size() == 1) {
-							System.out.println("child.get(0).getTagName() : " + child.get(0).getTagName());
 							if (child.get(0).getTagName().equalsIgnoreCase("span")) {
 								allTexts.add(parentSiblings.get(i).getText());
 							} else if (child.get(0).getTagName().equalsIgnoreCase("input")) {
@@ -127,33 +130,88 @@ public class RadioButtonPatterns {
 								if (new SupportUtil().getAttributes(child.get(0)).equalsIgnoreCase(attributes)) {
 									finalIdx = ipcount;
 								}
-								System.out.println("finalIdx is " + finalIdx);
 							}
-							System.out.println("allTexts inside if: " + allTexts);
 						} else if (child.size() == 0) {
-							System.out.println("Went inside zero child size");
 							String txt = parentSiblings.get(i).getText();
-							System.out.println("Text inside zero - " + txt);
 							if ((txt != null) && txt.trim().length() > 0) {
 								allTexts.add(parentSiblings.get(i).getText().trim());
 							}
-							System.out.println("allTexts inside else if: " + allTexts);
 						}
 					}
 				} else {
 					return false;
 				}
 				try {
-					divParentingToInputWithParentSiblingText = allTexts.get(finalIdx);
 				} catch (IndexOutOfBoundsException e) {
 
 				}
-				System.out.println("allTexts finally found and are : " + allTexts);
+			}
+		}
+		return false;
+	}
+
+	private boolean isparentLabelsInnerSpanText() {
+			WebElement parentLabel = new TagsFinder().parentLabel(cElement.getElement());
+			if (parentLabel != null) {
+				List<WebElement> childSpans = new TagsFinder().childSpans(parentLabel);
+				if (childSpans.size() > 0) {
+					parentLabelsInnerSpanText = childSpans.get(0).getText();
+					cElement.setElement(parentLabel);
+					return true;
+				}
+			}
+		return false;
+	}
+	
+	private boolean isGrandParentLabelsInnerSpansParentDivText() {
+		WebElement parentDiv = new TagsFinder().parentDiv(cElement.getElement());
+		if (parentDiv != null) {
+			WebElement grandParentLabel = new TagsFinder().parentLabel(parentDiv);
+			if (grandParentLabel != null) {
+				List<WebElement> spanElements = new TagsFinder().innerSpanElements(grandParentLabel);
+				if (spanElements.size() > 0) {
+					for (WebElement spnElement : spanElements) {
+						WebElement pDiv = new TagsFinder().parentDiv(spnElement);
+						if (pDiv != null) {
+							String divTxt = pDiv.getText();
+							if (divTxt != null && divTxt.trim().length() > 0) {
+								grandParentLabelsInnerSpansParentDivText = divTxt.trim();
+								cElement.setElement(grandParentLabel);
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean isInputTagWithParentFontHavingText() {
+		WebElement parentElement = new TagsFinder().parentFont(cElement.getElement());
+		if (parentElement != null) {
+			String txt = parentElement.getText();
+			if (txt != null && txt.trim().length() > 0) {
+				parentFontHavingText = txt;
+				return true;
 			}
 		}
 		return false;
 	}
 	
+	private boolean isInputHavingAriaLabel() {
+		inputHavingAriaLabel = cElement.getElement().getAttribute("aria-label");
+		if (inputHavingAriaLabel != null && inputHavingAriaLabel.trim().length() > 0)
+			return true;
+		return false;
+	}
+
+	private boolean isInputHavingValueAttribute() {
+		inputHavingValue = cElement.getElement().getAttribute("value");
+		if (inputHavingValue != null && inputHavingValue.trim().length() > 0)
+			return true;
+		return false;
+	}
 	
 	public RadioButton findPattern() {
 		if (isRadioButton()) {
@@ -162,10 +220,22 @@ public class RadioButtonPatterns {
 			isLabelParentingToInput();
 			isDivParentingToInput();
 			isDivParentingToInputWithParentSiblingText();
+			isparentLabelsInnerSpanText();
+			isGrandParentLabelsInnerSpansParentDivText();
+			isInputTagWithParentFontHavingText();
+			isInputHavingAriaLabel();
+			isInputHavingValueAttribute();
+			
 			rdo.setSiblingLabel(siblingLabel);
 			rdo.setParentLabelText(parentLabelText);
 			rdo.setParentDivText(parentDivText);
 			rdo.setDivParentingToInputWithParentSiblingText(divParentingToInputWithParentSiblingText);
+			rdo.setParentLabelsInnerSpanText(parentLabelsInnerSpanText);
+			rdo.setGrandParentLabelsInnerSpansParentDivText(grandParentLabelsInnerSpansParentDivText);
+			rdo.setParentFontHavingText(parentFontHavingText);
+			rdo.setInputHavingAriaLabel(inputHavingAriaLabel);
+			rdo.setInputHavingValue(inputHavingValue);
+			
 			rdo.setElement(cElement.getElement());
 			return rdo;
 		}

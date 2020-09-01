@@ -82,7 +82,7 @@ public class Button {
 	public void setPaperButtonInnerYtFormattedString(String paperButtonInnerYtFormattedString) {
 		this.paperButtonInnerYtFormattedString = paperButtonInnerYtFormattedString;
 	}
-	
+
 	public CurrentElement compare(String elementText) {
 
 		if (cElement.getTagName().equalsIgnoreCase("paper-button")) {
