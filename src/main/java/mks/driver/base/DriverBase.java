@@ -19,6 +19,7 @@ public class DriverBase {
 	public void getBrowser() throws Exception {
 		//driver = new BrowserUtil().launchChrome();
 		driver = ChromeDriverManager.launchChrome();
+		driver.manage().window().maximize();
 	}
 	
 	@AfterClass

@@ -10,28 +10,24 @@ import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.MyDriver;
 import mks.uiautowagon.interactor.WagonerElements;
 import mks.uiautowagon.interactor.WagonerFacade;
-import mks.uiautowagon.interactor.patterns.objects.Button;
-import mks.uiautowagon.interactor.patterns.objects.Checkbox;
-import mks.uiautowagon.interactor.store.ButtonStore;
-import mks.uiautowagon.interactor.store.CheckboxStore;
-import mks.uiautowagon.interactor.store.RadioButtonStore;
-import mks.uiautowagon.interactor.store.TextFieldsStore;
+import mks.uiautowagon.interactor.patterns.objects.SelectBox;
+import mks.uiautowagon.interactor.store.SelectBoxStore;
 
-public class CheckBoxComponent implements WagonerElements {
+public class SelectBoxComponent implements WagonerElements {
 
 	WebDriver driver = null;
-	public CheckBoxComponent() {
+
+	public SelectBoxComponent() {
 		this.driver = MyDriver.getDriver();
 	}
 
 	@Override
 	public WebElement get(String label) {
-		WebElement element = new CheckboxStore().find(label);
+
+		WebElement element = new SelectBoxStore().find(label);
 		if (element == null) {
 			new WagonerFacade().reload();
-			CheckboxStore chkStore = new CheckboxStore();
-			System.out.println("11111");
-			element = chkStore.find(label);
+			element = new SelectBoxStore().find(label);
 		}
 		return element;
 	}
@@ -44,10 +40,11 @@ public class CheckBoxComponent implements WagonerElements {
 
 	@Override
 	public WebElement get(int position) {
-		List<Checkbox> elements = CheckboxStore.checkboxList;
+
+		List<SelectBox> elements = SelectBoxStore.selectBoxList;
 		if (position < 1 || position > elements.size())
-			throw new NoSuchElementPositionException("No Checkbox found in the given position " + position);
-		Checkbox sb = elements.get(position - 1);
+			throw new NoSuchElementPositionException("No select box found in the given position " + position);
+		SelectBox sb = elements.get(position - 1);
 		CurrentElement ce = sb.getcElement();
 		return ce.getElement();
 	}

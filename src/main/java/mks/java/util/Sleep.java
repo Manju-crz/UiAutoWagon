@@ -21,6 +21,15 @@ public class Sleep {
 		}
 	}
 
+	public static void for3Seconds() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public static void for5Seconds() {
 		try {
 			Thread.sleep(5000);

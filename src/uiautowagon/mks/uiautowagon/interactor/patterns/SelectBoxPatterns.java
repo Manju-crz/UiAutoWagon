@@ -1,7 +1,5 @@
 package mks.uiautowagon.interactor.patterns;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
@@ -9,10 +7,9 @@ import org.openqa.selenium.WebElement;
 import mks.uiautowagon.interactor.CurrentElement;
 import mks.uiautowagon.interactor.interutil.SupportUtil;
 import mks.uiautowagon.interactor.interutil.TagsFinder;
-import mks.uiautowagon.interactor.patterns.objects.TextField;
-import mks.uiautowagon.interactor.store.TextFieldsStore;
+import mks.uiautowagon.interactor.patterns.objects.SelectBox;
 
-public class TextFieldPatterns {
+public class SelectBoxPatterns {
 	
 	private String placeholder = null;
 	private String label = null;
@@ -40,9 +37,8 @@ public class TextFieldPatterns {
 	
 	CurrentElement cElement = null;
 	
-	private List<String> acceptedAttributeTypes = new ArrayList<>(Arrays.asList("password", "text", "email", "tel", "search"));
 	
-	public TextFieldPatterns(CurrentElement cElement) {
+	public SelectBoxPatterns(CurrentElement cElement) {
 		this.cElement = cElement;
 	}
 	
@@ -73,9 +69,9 @@ public class TextFieldPatterns {
 	}
 	
 
-	private boolean isTextField() {
-		String attributeType = cElement.getElement().getAttribute("type");
-		if ((attributeType != null) && (acceptedAttributeTypes.contains(attributeType)))
+	private boolean isSelectBox() {
+		String attributeName = cElement.getElement().getTagName().trim();
+		if ((attributeName != null) && ("select".equalsIgnoreCase(attributeName)))
 			return true;
 		return false;
 	}
@@ -100,6 +96,7 @@ public class TextFieldPatterns {
 
 	private boolean isInputTagHavingPlaceholder() {
 		placeholder = cElement.getElement().getAttribute("placeholder");
+		System.out.println("placeholder is : " + placeholder);
 		if (placeholder != null) {
 			return true;
 		}
@@ -118,9 +115,12 @@ public class TextFieldPatterns {
 
 	private boolean isInputTagWithSiblingedSpan() {
 		
+		System.out.println("cElement.getElement()attrte : " + cElement.getAttributes());
 		WebElement siblingSpanTxtElement = new TagsFinder().siblingSpan(cElement.getElement());
+		System.out.println("siblingSpanTxtElement s : " + siblingSpanTxtElement);
 		if (siblingSpanTxtElement != null) {
 			siblingSpanText = siblingSpanTxtElement.getText().trim();
+			System.out.println("siblingSpanText -- " + siblingSpanText);
 			return true;
 		}
 		return false;
@@ -130,6 +130,7 @@ public class TextFieldPatterns {
 
 		if (label == null) {
 			String elementAttribute = new SupportUtil().getAttributes(cElement.getElement());
+			System.out.println("elementAttribute -- " + elementAttribute);
 			WebElement tdParent = new TagsFinder().parentTD(cElement.getElement());
 			if (tdParent != null) {
 				WebElement trParent = new TagsFinder().parentTR(tdParent);
@@ -137,15 +138,19 @@ public class TextFieldPatterns {
 					WebElement parentTbodyElement = new TagsFinder().parentTBody(trParent);
 					if (parentTbodyElement != null) {
 						List<WebElement> allInnerInputs = new TagsFinder().innerInputs_ChildToTD(parentTbodyElement);
+						System.out.println("allInnerInputs found are: " + allInnerInputs.size());
 						int i;
 						for (i = 0; i < allInnerInputs.size(); i++) {
+							System.out.println("new SupportUtil().getAttributes(allInnerInputs.get(i)) : " + new SupportUtil().getAttributes(allInnerInputs.get(i)));
 							if (new SupportUtil().getAttributes(allInnerInputs.get(i)).equalsIgnoreCase(elementAttribute)) {
 								break;
 							}
 						}
 						List<WebElement> allInnerLabels = new TagsFinder().innerLabels_ChildToTD(parentTbodyElement);
+						System.out.println("allInnerLabels found are: " + allInnerLabels.size());
 						if (allInnerLabels.size() > i) {
 							trParallelLabel = allInnerLabels.get(i).getText().trim();
+							System.out.println("allInnerLabels.get(i).getText().trim() : " + trParallelLabel);
 						}
 					}
 				}
@@ -155,23 +160,31 @@ public class TextFieldPatterns {
 	}
 	
 	private boolean isInputTagWithSiblingedDivPlaceholder() {
+		
+		System.out.println("label at this posiiong is : " + label);
+		System.out.println("placeholder at this posiiong is : " + placeholder);
 
 		if ((!isLabelFound()) && (!isPlaceholderFound())) {
 			List<WebElement> siblings = new TagsFinder().siblingDivs(cElement.getElement());
+			System.out.println("Found siblings divs are : " + siblings.size());
 
 			for (WebElement tempElement : siblings) {
 				
 				String placeHolderTxt = tempElement.getAttribute("placeholder");
+				System.out.println("placeHolderTxt fnd is : " + placeHolderTxt);
 				if ((placeHolderTxt != null) && placeHolderTxt.trim().length() > 0) {
 					divNeighbourPlaceholder = placeHolderTxt.trim();
+					System.out.println("divNeighbourPlaceholder s : " + divNeighbourPlaceholder);
 					return true;
 				}
 				placeHolderTxt = tempElement.getAttribute("class");
+				System.out.println("class fnd is : " + placeHolderTxt);
 				if ((placeHolderTxt != null) && placeHolderTxt.trim().equalsIgnoreCase("placeholder")) {
 					divNeighbourPlaceholder = tempElement.getText().trim();
 					return true;
 				}
 				placeHolderTxt = tempElement.getAttribute("name");
+				System.out.println("name fnd is : " + placeHolderTxt);
 				if ((placeHolderTxt != null) && placeHolderTxt.trim().equalsIgnoreCase("placeholder")) {
 					divNeighbourPlaceholder = tempElement.getText().trim();
 					return true;
@@ -184,8 +197,11 @@ public class TextFieldPatterns {
 	}
 	
 	private boolean isInputTagHavingAriaLabelholder() {
+		System.out.println("isInputTagHavingAriaLabelholder label : " + label);
+		System.out.println("isInputTagHavingAriaLabelholder placeholder : " + placeholder);
 		if ((label == null) && (!isPlaceholderFound())) {
 			ariaLabel = cElement.getElement().getAttribute("aria-label");
+			System.out.println("ariaLabel is :: " + ariaLabel);
 			return true;
 		}
 		return false;
@@ -210,7 +226,6 @@ public class TextFieldPatterns {
 
 	private boolean isDivParentsSiblingChildLabelUnderGrandParentDiv() {
 		if (parentDivsSiblingLabel == null) {
-			System.out.println("TextFieldsStore.textFieldsList.size() : " + TextFieldsStore.textFieldsList.size());
 			WebElement parentDiv = new TagsFinder().parentDiv(cElement.getElement());
 			if (parentDiv != null) {
 				List<WebElement> parentSiblingDivs = new TagsFinder().siblingDivs(parentDiv);
@@ -379,9 +394,12 @@ public class TextFieldPatterns {
 		return true;
 	}
 	
-	public TextField findPattern() {
-		if (isTextField()) {
-			TextField tf = new TextField();
+	public SelectBox findPattern() {
+		if (isSelectBox()) {
+			
+			System.out.println("Element considered to be select box and attributes are " + cElement.getAttributes() );
+			
+			SelectBox tf = new SelectBox();
 			isInputTagHavingPlaceholder();
 			isInputTagWithSiblingedLabel();
 			isFirstTrHavingLabelsSecondTrHavingInput();

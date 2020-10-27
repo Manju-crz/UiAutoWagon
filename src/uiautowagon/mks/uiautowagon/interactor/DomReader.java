@@ -8,13 +8,13 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import mks.uiautowagon.interactor.interutil.SupportUtil;
 import mks.uiautowagon.interactor.patterns.ButtonPatterns;
 import mks.uiautowagon.interactor.patterns.CheckboxPatterns;
 import mks.uiautowagon.interactor.patterns.FramePatterns;
 import mks.uiautowagon.interactor.patterns.LinkPatterns;
 import mks.uiautowagon.interactor.patterns.OtherPatterns;
 import mks.uiautowagon.interactor.patterns.RadioButtonPatterns;
+import mks.uiautowagon.interactor.patterns.SelectBoxPatterns;
 import mks.uiautowagon.interactor.patterns.TextAreaPatterns;
 import mks.uiautowagon.interactor.patterns.TextFieldPatterns;
 import mks.uiautowagon.interactor.patterns.objects.Button;
@@ -23,6 +23,7 @@ import mks.uiautowagon.interactor.patterns.objects.Frames;
 import mks.uiautowagon.interactor.patterns.objects.Link;
 import mks.uiautowagon.interactor.patterns.objects.Other;
 import mks.uiautowagon.interactor.patterns.objects.RadioButton;
+import mks.uiautowagon.interactor.patterns.objects.SelectBox;
 import mks.uiautowagon.interactor.patterns.objects.TextArea;
 import mks.uiautowagon.interactor.patterns.objects.TextField;
 import mks.uiautowagon.interactor.store.ButtonStore;
@@ -33,6 +34,7 @@ import mks.uiautowagon.interactor.store.FramesStore;
 import mks.uiautowagon.interactor.store.LinkStore;
 import mks.uiautowagon.interactor.store.OtherStore;
 import mks.uiautowagon.interactor.store.RadioButtonStore;
+import mks.uiautowagon.interactor.store.SelectBoxStore;
 import mks.uiautowagon.interactor.store.TextAreaStore;
 import mks.uiautowagon.interactor.store.TextFieldsStore;
 
@@ -47,7 +49,7 @@ public class DomReader {
 	
 	void distribute() {
 
-		List<WebElement> allElements = driver.findElements(By.xpath("//body//input|//body//a|//body//button|//body//paper-button|//body//textarea")); //[not(contains(@style,'display:none'))]		//body//*
+		List<WebElement> allElements = driver.findElements(By.xpath("//body//input|//body//a|//body//button|//body//paper-button|//body//textarea|//body//select")); //[not(contains(@style,'display:none'))]		//body//*
 		System.out.println("inputElements size is : " + allElements.size());
 		ElementsStore elementsStore = new ElementsStore();
 		ClickElementsStore clickElementsStore = new ClickElementsStore();
@@ -59,7 +61,8 @@ public class DomReader {
 		int rdoCount = 1;
 		int textareaCount = 1;
 		int otherCount = 1;
-
+		int selectboxCount = 1;
+		
 		TextFieldsStore tfs = new TextFieldsStore();
 		CheckboxStore cbs = new CheckboxStore();
 		ButtonStore bs = new ButtonStore();
@@ -68,6 +71,7 @@ public class DomReader {
 		LinkStore lk = new LinkStore();
 		RadioButtonStore rdos = new RadioButtonStore();
 		TextAreaStore tas = new TextAreaStore();
+		SelectBoxStore sbs = new SelectBoxStore();
 		
 		for (WebElement element : allElements) {
 			
@@ -93,6 +97,14 @@ public class DomReader {
 					continue;
 				}
 
+				SelectBox selectboxEement = new SelectBoxPatterns(cElement).findPattern();
+				if (selectboxEement != null) {
+					elementsStore.add("SelectBox" + selectboxCount, selectboxEement);
+					sbs.add(selectboxEement);
+					selectboxCount++;
+					continue;
+				}
+				
 				TextField textfieldEement = new TextFieldPatterns(cElement).findPattern();
 				if (textfieldEement != null) {
 					elementsStore.add("Textfield" + textfieldCount, textfieldEement);

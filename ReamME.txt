@@ -17,8 +17,10 @@ Adding New Component to handle
 9. XyzStore class should have add and find methods
 10. Create XyzComponent class inside mks.uiautowagon.interactor.components package
 11. XyzComponent class - Make sure all get methods are implemented.
-12. DomReader class > distribute method - Write new component related code in it (increment variable / Xyz variable / if condition in inside loop).
-13. WagonerFacade class - Add a variable inside the clas with Xyz type and initialize XyzComponent in reload method
+12. DomReader class > distribute method - Write new component related code in it (increment variable / XyzStore variable / if condition in inside loop).
+13. If there a chance of new tag name based on new object, then need DomReader class has a variable, and that needs to be updated in its xpath with new tag name.
+14. WagonerFacade class - Add a variable inside the class with Xyz type, update in clearLocators method and update in initialize method.
+
 
 
 
